@@ -40,7 +40,7 @@ docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 ## Stato dei lavori
 
 - [x] Struttura del repository
-- [ ] Analisi dei requisiti e casi d'uso
+- [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [ ] Progettazione: architettura, modello ER, API
 - [ ] Back-end e database
 - [ ] Front-end
