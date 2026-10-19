@@ -63,12 +63,12 @@ sequenceDiagram
     F->>A: POST /api/v1/prenotazioni (token JWT)
     A->>A: verifica token e ruolo
     A->>P: crea_prenotazione(utente, sessione, codice promo)
-    P->>D: BEGIN; SELECT sessione FOR UPDATE
+    P->>D: BEGIN, poi SELECT sessione FOR UPDATE
     Note over P,D: la riga della sessione resta bloccata<br/>fino alla fine della transazione
     P->>D: conta prenotazioni attive della sessione
     alt posti disponibili
         P->>P: calcola prezzo e sconto migliore (RB03, RB08)
-        P->>D: INSERT prenotazione "in attesa"; COMMIT
+        P->>D: INSERT prenotazione in attesa, poi COMMIT
         A-->>F: 201 Created + riepilogo
         F-->>C: mostra riepilogo e pulsante "Paga"
     else posti esauriti
