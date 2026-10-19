@@ -45,13 +45,33 @@ docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 
 ## Avvio del progetto
 
-> Le istruzioni saranno completate man mano che il prototipo prende forma.
+Serve soltanto [Docker Desktop](https://www.docker.com/products/docker-desktop/) installato e avviato.
+
+1. Copia il file `.env.example` in un nuovo file chiamato `.env` (e, se vuoi, cambia password e chiave segreta).
+2. Dalla cartella del progetto avvia tutto con:
+
+   ```bash
+   docker compose up --build
+   ```
+
+3. Al primo avvio Docker scarica le immagini e crea le tabelle del database (servono alcuni minuti).
+4. Apri nel browser:
+   - <http://localhost:8000/api/v1/salute>: deve rispondere `{"stato": "ok", ...}`
+   - <http://localhost:8000/docs>: documentazione interattiva delle API (Swagger)
+
+Per fermare tutto: `Ctrl+C`, oppure `docker compose down`.
+
+### Eseguire i test
+
+```bash
+docker compose run --rm backend pytest -v
+```
 
 ## Stato dei lavori
 
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
-- [ ] Back-end e database
+- [ ] Back-end e database (in corso: configurazione, modelli e schema iniziale pronti)
 - [ ] Front-end
 - [ ] Test funzionali e documentazione
