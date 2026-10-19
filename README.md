@@ -33,6 +33,16 @@ frontend/   interfaccia web React
 docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 ```
 
+## Documentazione
+
+| Documento | Contenuto |
+| --- | --- |
+| [Requisiti](docs/requisiti.md) | Processo attuale della bottega, attori, requisiti e regole di business |
+| [Casi d'uso](docs/diagrammi/casi-d-uso.md) | Diagramma e specifica dei casi d'uso principali |
+| [Architettura](docs/architettura.md) | Livelli del sistema, flusso di una prenotazione, sicurezza |
+| [Modello dei dati](docs/modello-dati.md) | Diagramma ER, scelte di modellazione, vincoli di integrità |
+| [API](docs/api.md) | Endpoint, convenzioni, codici di risposta ed esempi |
+
 ## Avvio del progetto
 
 > Le istruzioni saranno completate man mano che il prototipo prende forma.
@@ -41,7 +51,7 @@ docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
-- [ ] Progettazione: architettura, modello ER, API
+- [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
 - [ ] Back-end e database
 - [ ] Front-end
 - [ ] Test funzionali e documentazione
