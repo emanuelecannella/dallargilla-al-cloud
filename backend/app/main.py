@@ -6,12 +6,14 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_impostazioni
 from app.core.database import get_db
+from app.core.errori import registra_gestori_errori
+from app.routers import auth, utenti
 
 impostazioni = get_impostazioni()
 
 app = FastAPI(
     title=impostazioni.nome_progetto,
-    version="0.1.0",
+    version="0.2.0",
     description=(
         "API della piattaforma di Bottega Terracotta Viva: catalogo di corsi ed esperienze, "
         "prenotazioni, area personale e pannello di amministrazione."
@@ -28,6 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+registra_gestori_errori(app)
+
 api = APIRouter(prefix="/api/v1")
 
 
@@ -43,5 +47,8 @@ def salute_database(db: Session = Depends(get_db)) -> dict[str, str]:
     db.execute(text("SELECT 1"))
     return {"stato": "ok", "database": "raggiungibile"}
 
+
+api.include_router(auth.router)
+api.include_router(utenti.router)
 
 app.include_router(api)

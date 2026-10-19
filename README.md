@@ -59,6 +59,8 @@ Serve soltanto [Docker Desktop](https://www.docker.com/products/docker-desktop/)
    - <http://localhost:8000/api/v1/salute>: deve rispondere `{"stato": "ok", ...}`
    - <http://localhost:8000/docs>: documentazione interattiva delle API (Swagger)
 
+Per provare le API protette: in `/docs` usa `POST /auth/registrazione`, poi `POST /auth/login`, copia l'`access_token` e incollalo nel pulsante **Authorize**.
+
 Per fermare tutto: `Ctrl+C`, oppure `docker compose down`.
 
 ### Eseguire i test
@@ -72,6 +74,6 @@ docker compose run --rm backend pytest -v
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
-- [ ] Back-end e database (in corso: configurazione, modelli e schema iniziale pronti)
+- [ ] Back-end e database (in corso: modelli, schema, registrazione, login e profilo pronti)
 - [ ] Front-end
 - [ ] Test funzionali e documentazione
