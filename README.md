@@ -80,6 +80,6 @@ docker compose run --rm backend pytest -v
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
-- [ ] Back-end e database (in corso: modelli, schema, autenticazione, catalogo e calendario pronti)
+- [ ] Back-end e database (in corso: autenticazione, catalogo, prenotazioni, acquisti e pagamenti simulati pronti)
 - [ ] Front-end
 - [ ] Test funzionali e documentazione

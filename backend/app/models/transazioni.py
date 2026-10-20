@@ -60,6 +60,7 @@ class Acquisto(Base):
     utente: Mapped["Utente"] = relationship(back_populates="acquisti")  # noqa: F821
     pacchetto: Mapped[Optional["Pacchetto"]] = relationship()  # noqa: F821
     piano: Mapped[Optional["PianoMembership"]] = relationship()  # noqa: F821
+    promozione: Mapped[Optional["Promozione"]] = relationship()  # noqa: F821
     prenotazioni: Mapped[list["Prenotazione"]] = relationship(back_populates="acquisto")
 
 
@@ -100,6 +101,7 @@ class Prenotazione(Base):
     utente: Mapped["Utente"] = relationship(back_populates="prenotazioni")  # noqa: F821
     sessione: Mapped["Sessione"] = relationship(back_populates="prenotazioni")  # noqa: F821
     acquisto: Mapped[Acquisto | None] = relationship(back_populates="prenotazioni")
+    promozione: Mapped[Optional["Promozione"]] = relationship()  # noqa: F821
     pagamenti: Mapped[list["Pagamento"]] = relationship(back_populates="prenotazione")
     valutazione: Mapped[Optional["Valutazione"]] = relationship(back_populates="prenotazione")  # noqa: F821
 
