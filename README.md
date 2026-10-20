@@ -55,6 +55,12 @@ Serve soltanto [Docker Desktop](https://www.docker.com/products/docker-desktop/)
    ```
 
 3. Al primo avvio Docker scarica le immagini e crea le tabelle del database (servono alcuni minuti).
+   In un secondo terminale carica i dati iniziali della bottega (listino, calendario, amministratore):
+
+   ```bash
+   docker compose run --rm backend python -m app.seed
+   ```
+
 4. Apri nel browser:
    - <http://localhost:8000/api/v1/salute>: deve rispondere `{"stato": "ok", ...}`
    - <http://localhost:8000/docs>: documentazione interattiva delle API (Swagger)
@@ -74,6 +80,6 @@ docker compose run --rm backend pytest -v
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
-- [ ] Back-end e database (in corso: modelli, schema, registrazione, login e profilo pronti)
+- [ ] Back-end e database (in corso: modelli, schema, autenticazione, catalogo e calendario pronti)
 - [ ] Front-end
 - [ ] Test funzionali e documentazione
