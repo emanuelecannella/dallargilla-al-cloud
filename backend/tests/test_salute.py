@@ -16,7 +16,7 @@ def test_documentazione_api_disponibile():
     # FastAPI genera in automatico la specifica OpenAPI delle API
     risposta = client.get("/openapi.json")
     assert risposta.status_code == 200
-    assert risposta.json()["info"]["version"] == "0.4.0"
+    assert risposta.json()["info"]["version"] == "1.0.0"
 
 
 def test_modelli_registrano_tutte_le_tabelle():

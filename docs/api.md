@@ -135,12 +135,17 @@ Authorization: Bearer eyJhbGciOi...
 
 ```json
 {
+  "dal": "2026-11-01",
+  "al": "2026-11-30",
   "prenotazioni_confermate": 0,
   "tasso_riempimento_medio": 0.0,
-  "incassi_cent_per_tipo": { "corso": 0, "esperienza": 0, "coworking": 0, "pacchetto": 0 },
+  "incassi_totali_cent": 0,
+  "incassi_cent_per_tipo": { "corso": 0, "esperienza": 0, "coworking": 0, "pacchetto": 0, "membership": 0 },
   "membership_attive": 0,
-  "valutazione_media": null
+  "nuovi_clienti": 0,
+  "valutazione_media": null,
+  "servizi_piu_richiesti": []
 }
 ```
 
-I valori dell'esempio sono a zero: la risposta reale dipende dai dati presenti nel database.
+I valori dell'esempio sono a zero: la risposta reale dipende dai dati presenti nel database. Senza i parametri `dal` e `al` la dashboard considera gli ultimi 30 giorni.
