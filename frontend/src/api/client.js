@@ -33,5 +33,9 @@ export async function richiesta(percorso, opzioni = {}) {
 
 export const catalogo = {
   servizi: () => richiesta("/servizi"),
+  servizio: (slug) => richiesta(`/servizi/${encodeURIComponent(slug)}`),
+  sessioni: (servizioId) => richiesta(`/servizi/${servizioId}/sessioni`),
+  valutazioni: (servizioId) => richiesta(`/servizi/${servizioId}/valutazioni`),
   pacchetti: () => richiesta("/pacchetti"),
+  pianiMembership: () => richiesta("/piani-membership"),
 };

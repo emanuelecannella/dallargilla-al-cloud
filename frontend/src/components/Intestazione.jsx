@@ -8,8 +8,8 @@ export default function Intestazione() {
           Terracotta <span>Viva</span>
         </Link>
         <nav aria-label="Navigazione principale">
-          <a href="/#chi-siamo">Chi siamo</a>
-          <a href="/#servizi">Corsi ed esperienze</a>
+          <Link to="/#chi-siamo">Chi siamo</Link>
+          <Link to="/#servizi">Corsi ed esperienze</Link>
         </nav>
       </div>
     </header>

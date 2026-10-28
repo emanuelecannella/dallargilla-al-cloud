@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { euro, formatoServizio } from "../utils/formato.js";
 
 const ETICHETTE = { corso: "Corso", esperienza: "Esperienza", coworking: "Coworking" };
@@ -7,7 +8,9 @@ export default function SchedaServizio({ servizio }) {
   return (
     <article className="scheda">
       <span className={`etichetta etichetta--${servizio.tipo}`}>{ETICHETTE[servizio.tipo]}</span>
-      <h3>{servizio.nome}</h3>
+      <h3>
+        <Link to={`/servizi/${servizio.slug}`}>{servizio.nome}</Link>
+      </h3>
       <p className="scheda__descrizione">{servizio.descrizione}</p>
       <dl className="scheda__dati">
         <div>
@@ -24,6 +27,7 @@ export default function SchedaServizio({ servizio }) {
           <dd>max {servizio.capienza}</dd>
         </div>
       </dl>
+      <Link className="scheda__link" to={`/servizi/${servizio.slug}`}>Scopri le date →</Link>
     </article>
   );
 }

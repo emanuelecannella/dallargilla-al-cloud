@@ -73,3 +73,36 @@ a { color: var(--terracotta-scuro); }
 /* Piè di pagina */
 .pie { background: var(--testo); color: var(--argilla); padding-block: 28px; margin-top: 32px; font-size: 0.9rem; }
 .pie__nota { color: #bfae9f; font-size: 0.8rem; }
+
+/* Link nelle schede */
+.scheda h3 a { color: inherit; text-decoration: none; }
+.scheda h3 a:hover { color: var(--terracotta); }
+.scheda__link { margin-top: 14px; font-weight: 600; text-decoration: none; }
+
+/* Pagina di dettaglio di un servizio */
+.dettaglio { max-width: 820px; }
+.indietro { text-decoration: none; font-size: 0.95rem; }
+.dettaglio h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 12px 0; }
+.dettaglio__descrizione { font-size: 1.1rem; }
+.dettaglio__dati { display: flex; flex-wrap: wrap; gap: 28px; background: var(--argilla); border-radius: var(--raggio); padding: 16px 20px; }
+.dettaglio__dati dt { font-size: 0.75rem; text-transform: uppercase; color: var(--testo-tenue); }
+.dettaglio__dati dd { margin: 0; font-weight: 600; }
+.nota { color: var(--testo-tenue); font-size: 0.95rem; }
+.blocco { margin-top: 36px; }
+
+.calendario { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.calendario li { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 12px 16px; }
+.calendario__giorno { font-weight: 600; grid-column: 1; }
+.calendario__giorno::first-letter { text-transform: uppercase; } /* "Sabato 7 novembre": maiuscola solo all'inizio */
+.calendario li > span:nth-child(2) { grid-column: 1; color: var(--testo-tenue); }
+.calendario .posti { grid-column: 2; grid-row: 1 / span 2; font-weight: 600; color: var(--verde-smalto); }
+.calendario .posti--pochi { color: var(--terracotta); }
+.calendario li.esaurita { opacity: 0.55; }
+
+.piani { padding-left: 18px; }
+.media { font-weight: 600; color: var(--terracotta-scuro); }
+.recensioni { list-style: none; padding: 0; display: grid; gap: 12px; }
+.recensioni li { background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 12px 16px; }
+.recensioni p { margin: 6px 0; }
+.stelle { color: #c98a2b; letter-spacing: 2px; }
+.autore { color: var(--testo-tenue); font-size: 0.9rem; }

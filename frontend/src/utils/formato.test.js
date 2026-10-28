@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { durata, euro, formatoServizio } from "./formato.js";
+import { durata, euro, formatoServizio, giorno, orario, postiLiberi } from "./formato.js";
 
 // Lo spazio prima del simbolo dell'euro è uno spazio "non separabile": lo normalizziamo
 const pulito = (testo) => testo.replace(/\s/g, " ");
@@ -29,5 +29,24 @@ describe("formatoServizio", () => {
   });
   test("un'esperienza mostra solo la durata", () => {
     expect(formatoServizio({ numero_incontri: 1, durata_minuti: 90 })).toBe("1 h 30 min");
+  });
+});
+
+describe("date della bottega", () => {
+  test("il giorno è scritto per esteso, nell'ora di Palermo", () => {
+    expect(giorno("2026-11-07T10:00:00+01:00")).toBe("sabato 7 novembre");
+    // alle 23:30 UTC a Palermo è già il giorno dopo
+    expect(giorno("2026-11-07T23:30:00Z")).toBe("domenica 8 novembre");
+  });
+  test("l'orario mostra inizio e fine", () => {
+    expect(orario("2026-11-07T10:00:00+01:00", "2026-11-07T12:00:00+01:00")).toBe("10:00 – 12:00");
+  });
+});
+
+describe("postiLiberi", () => {
+  test("distingue esaurito, ultimo posto e posti disponibili", () => {
+    expect(postiLiberi(0)).toBe("Esaurito");
+    expect(postiLiberi(1)).toBe("Ultimo posto!");
+    expect(postiLiberi(4)).toBe("4 posti liberi");
   });
 });
