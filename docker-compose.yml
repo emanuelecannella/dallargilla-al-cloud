@@ -25,5 +25,19 @@ services:
     ports:
       - "8000:8000"
 
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_TARGET: http://backend:8000   # le chiamate /api vengono girate al container del back-end
+      VITE_POLLING: "true"                   # rileva le modifiche ai file anche su Mac e Windows
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app          # il codice del front-end si modifica dal computer e si aggiorna da solo
+      - /app/node_modules        # le librerie restano quelle installate nel container
+
 volumes:
   dati_db:

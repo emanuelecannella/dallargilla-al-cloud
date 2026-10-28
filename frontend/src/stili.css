@@ -1,0 +1,75 @@
+/* Stile provvisorio della vetrina: colori della terra e dell'argilla.
+   La veste grafica definitiva verrà scelta nella seconda parte del front-end. */
+
+:root {
+  --terracotta: #b5523b;
+  --terracotta-scuro: #8e3d2b;
+  --argilla: #f4ebe1;
+  --sabbia: #e6d5c3;
+  --carta: #fffaf5;
+  --testo: #2e2420;
+  --testo-tenue: #6b5a50;
+  --verde-smalto: #4f7a6b;
+  --raggio: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--testo);
+  background: var(--carta);
+  line-height: 1.6;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+a { color: var(--terracotta-scuro); }
+
+.contenitore { width: min(1100px, 100% - 32px); margin-inline: auto; }
+.sezione { padding-block: 48px; }
+
+/* Intestazione */
+.intestazione { background: var(--carta); border-bottom: 1px solid var(--sabbia); position: sticky; top: 0; z-index: 10; }
+.intestazione__riga { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.marchio { font-family: Georgia, serif; font-size: 1.35rem; text-decoration: none; color: var(--testo); }
+.marchio span { color: var(--terracotta); }
+.intestazione nav { display: flex; gap: 20px; }
+.intestazione nav a { text-decoration: none; color: var(--testo); }
+.intestazione nav a:hover { color: var(--terracotta); }
+
+/* Benvenuto */
+.benvenuto { background: linear-gradient(135deg, var(--argilla), var(--sabbia)); padding-block: 64px; }
+.benvenuto h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 8px 0 16px; max-width: 18ch; }
+.benvenuto__sopratitolo { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; color: var(--terracotta-scuro); margin: 0; }
+.benvenuto__testo { font-size: 1.15rem; max-width: 55ch; }
+
+.pulsante { display: inline-block; background: var(--terracotta); color: #fff; padding: 12px 22px; border-radius: 999px; text-decoration: none; margin-top: 8px; }
+.pulsante:hover { background: var(--terracotta-scuro); }
+
+.due-colonne { display: grid; gap: 32px; }
+@media (min-width: 800px) { .due-colonne { grid-template-columns: 1fr 1fr; } }
+
+/* Catalogo */
+.griglia { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.scheda { background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 20px; display: flex; flex-direction: column; }
+.scheda h3 { margin: 10px 0 8px; font-size: 1.25rem; }
+.scheda__descrizione { color: var(--testo-tenue); flex: 1; }
+.scheda__dati { display: flex; gap: 20px; margin: 12px 0 0; padding-top: 12px; border-top: 1px dashed var(--sabbia); }
+.scheda__dati dt { font-size: 0.75rem; text-transform: uppercase; color: var(--testo-tenue); }
+.scheda__dati dd { margin: 0; font-weight: 600; }
+.scheda--pacchetto { border-color: var(--terracotta); background: var(--argilla); }
+
+.etichetta { align-self: flex-start; font-size: 0.75rem; padding: 2px 10px; border-radius: 999px; background: var(--sabbia); }
+.etichetta--corso { background: #f3d9cf; }
+.etichetta--esperienza { background: #e3ecd9; }
+.etichetta--coworking { background: #dfe7ee; }
+.etichetta--pacchetto { background: var(--terracotta); color: #fff; }
+
+.pacchetto__include { font-size: 0.9rem; }
+.pacchetto__prezzo strong { font-size: 1.3rem; }
+.pacchetto__prezzo s { color: var(--testo-tenue); }
+.risparmio { color: var(--verde-smalto); font-weight: 600; }
+
+.avviso { padding: 12px 16px; border-radius: var(--raggio); background: var(--argilla); }
+.avviso--errore { background: #fbe4e0; color: #8a1f12; }
+
+/* Piè di pagina */
+.pie { background: var(--testo); color: var(--argilla); padding-block: 28px; margin-top: 32px; font-size: 0.9rem; }
+.pie__nota { color: #bfae9f; font-size: 0.8rem; }

@@ -62,6 +62,7 @@ Serve soltanto [Docker Desktop](https://www.docker.com/products/docker-desktop/)
    ```
 
 4. Apri nel browser:
+   - <http://localhost:5173>: il sito di Bottega Terracotta Viva
    - <http://localhost:8000/api/v1/salute>: deve rispondere `{"stato": "ok", ...}`
    - <http://localhost:8000/docs>: documentazione interattiva delle API (Swagger)
 
@@ -72,7 +73,18 @@ Per fermare tutto: `Ctrl+C`, oppure `docker compose down`.
 ### Eseguire i test
 
 ```bash
-docker compose run --rm backend pytest -v
+docker compose run --rm backend pytest -v      # test del back-end
+docker compose run --rm frontend npm test      # test del front-end
+```
+
+### Ripartire da un database vuoto
+
+Per cancellare tutti i dati e ricaricare quelli iniziali (utile dopo un aggiornamento dei dati della bottega):
+
+```bash
+docker compose down -v
+docker compose up --build
+docker compose run --rm backend python -m app.seed
 ```
 
 ## Stato dei lavori
@@ -81,5 +93,5 @@ docker compose run --rm backend pytest -v
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
 - [x] Back-end e database: tutte le 30 operazioni della [specifica API](docs/api.md), 62 test automatici
-- [ ] Front-end
+- [ ] Front-end: struttura React e pagina iniziale della vetrina con il catalogo (in corso)
 - [ ] Test funzionali e documentazione

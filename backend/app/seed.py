@@ -30,24 +30,28 @@ from app.models import (
 FUSO = ZoneInfo("Europe/Rome")
 
 SERVIZI = [
-    # slug, tipo, nome, incontri, minuti per incontro, prezzo in centesimi, capienza, descrizione
+    # slug, tipo, nome, incontri, minuti per incontro, prezzo in centesimi, capienza, descrizione.
+    # Le descrizioni sono i testi della vetrina scritti per la bottega.
     ("corso-tornio-base", TipoServizio.corso, "Corso di tornio base", 8, 120, 34000, 6,
-     "Otto incontri per imparare a centrare l'argilla, aprire, tirare su le pareti e rifinire "
-     "ciotole e vasi. Argilla, attrezzi e prima cottura inclusi."),
+     "Vuoi metterti alla prova e dare forma alle tue idee? Il corso di tornio è dinamico, divertente "
+     "e adatto anche a chi è alla prima esperienza: scoprirai tutti i passaggi per creare qualcosa di unico!"),
     ("corso-decorazione", TipoServizio.corso, "Corso di decorazione", 4, 120, 14000, 8,
-     "Quattro incontri dedicati a ingobbi, sgraffito e pittura su biscotto, per dare un "
-     "carattere personale ai propri pezzi."),
+     "La vita è piena di colori, spesso dimenticati nelle nostre città grigie. In questo corso imparerai "
+     "le tecniche di incisione e pittura e scoprirai gli accostamenti cromatici che metteranno in risalto "
+     "le tue creazioni o i pezzi già pronti in bottega."),
     ("corso-cottura-smaltatura", TipoServizio.corso, "Corso di cottura e smaltatura", 3, 150, 15000, 6,
-     "Tre incontri per conoscere smalti, temperature e curve di cottura del forno elettrico, "
-     "dalla preparazione dei pezzi all'apertura del forno."),
+     "Sotto la guida di un professionista capirai come giocare con le temperature del forno e scoprirai "
+     "come la ceramica si trasforma!"),
     ("esperienza-tornio", TipoServizio.esperienza, "Esperienza giornaliera – tornio", 1, 120, 6000, 6,
-     "Due ore al tornio, anche senza esperienza: si torna a casa con il proprio pezzo, cotto e "
-     "pronto da ritirare dopo due settimane."),
+     "È l'occasione perfetta per toccare con mano l'emozione di creare un oggetto artigianale. "
+     "Un'esperienza da dedicare a te stesso o da condividere con i tuoi amici."),
     ("esperienza-decorazione", TipoServizio.esperienza, "Esperienza giornaliera – decorazione", 1, 90, 3500, 8,
-     "Un'ora e mezza per decorare un pezzo già cotto scegliendo colori e tecniche."),
+     "Libera la mente e dai sfogo alla fantasia! Lasciati guidare dall'istinto e gioca con colori, "
+     "sfumature e contrasti per personalizzare il tuo pezzo secondo i tuoi desideri."),
     ("coworking", TipoServizio.coworking, "Coworking in bottega", 1, 120, 0, 4,
-     "Turni da due ore per lavorare in autonomia con torni, attrezzi e forno. "
-     "Riservato ai titolari di una membership."),
+     "Crea il tuo spazio di lavoro in un contesto accogliente e stimolante, dove confrontarti con altri "
+     "artisti nel segno della condivisione e della crescita reciproca. La bottega diventa il laboratorio "
+     "della tua attività creativa, sostenuta da una rete di relazioni autentiche nate da una passione comune."),
 ]
 
 PIANI = [
@@ -95,8 +99,9 @@ def _crea_pacchetto(db: Session, servizi: dict[str, Servizio]) -> None:
         Pacchetto(
             slug="giornata-in-bottega",
             nome="Giornata in bottega",
-            descrizione="Tornio al mattino e decorazione al pomeriggio: la prima giornata ideale "
-            "per chi si avvicina alla ceramica.",
+            descrizione="Vivi una giornata all'insegna della creatività: in un'unica giornata provi sia "
+            "il tornio sia la decorazione, per scoprire due fasi della lavorazione della ceramica a un "
+            "prezzo ridotto rispetto alle due esperienze separate.",
             prezzo_cent=8500,
             servizi=[servizi["esperienza-tornio"], servizi["esperienza-decorazione"]],
         )
