@@ -183,3 +183,28 @@ button.pulsante:disabled { opacity: 0.6; cursor: wait; }
 .recensione-modulo textarea { font: inherit; padding: 8px 10px; border: 1px solid var(--sabbia); border-radius: 8px; }
 .stelle-scelta button { background: none; border: none; font-size: 1.6rem; color: var(--sabbia); cursor: pointer; padding: 0 2px; }
 .stelle-scelta button.piena { color: #c98a2b; }
+
+/* Pannello della titolare */
+.schede { display: flex; gap: 8px; border-bottom: 1px solid var(--sabbia); margin: 20px 0; flex-wrap: wrap; }
+.schede button { background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 14px; font: inherit; cursor: pointer; color: var(--testo-tenue); }
+.schede button.attiva { color: var(--terracotta-scuro); border-bottom-color: var(--terracotta); font-weight: 600; }
+.periodo { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 20px; }
+.periodo label { display: grid; gap: 4px; font-size: 0.9rem; }
+.periodo input, .campo select { font: inherit; padding: 8px 10px; border: 1px solid var(--sabbia); border-radius: 8px; background: #fff; }
+.indicatori { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-bottom: 28px; }
+.indicatore { background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 16px; display: grid; gap: 6px; }
+.indicatore span { font-size: 0.8rem; text-transform: uppercase; color: var(--testo-tenue); }
+.indicatore strong { font-size: 1.6rem; font-family: Georgia, serif; }
+.barre { list-style: none; padding: 0; display: grid; gap: 10px; }
+.barre li { display: grid; grid-template-columns: 110px 1fr auto; gap: 10px; align-items: center; }
+.barra { background: var(--argilla); border-radius: 999px; height: 10px; overflow: hidden; }
+.barra span { display: block; height: 100%; background: var(--terracotta); }
+.classifica { padding-left: 20px; display: grid; gap: 6px; }
+.modulo--riga { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); align-items: end; }
+.prenotazione--colonna { flex-direction: column; }
+.prenotazione__riga { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; width: 100%; }
+.prenotazione__riga > div:first-child { display: grid; gap: 2px; }
+.tabella { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.tabella th, .tabella td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--sabbia); }
+.tabella th { color: var(--testo-tenue); font-weight: 600; }
+@media (max-width: 640px) { .tabella thead { display: none; } .tabella tr { display: grid; padding: 6px 0; border-bottom: 1px solid var(--sabbia); } .tabella td { border: none; padding: 2px 0; } }

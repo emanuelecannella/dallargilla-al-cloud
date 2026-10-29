@@ -21,7 +21,11 @@ export default function Intestazione() {
           <Link to="/#servizi">Corsi ed esperienze</Link>
           {utente ? (
             <>
-              <Link to="/area-personale" className="nav__account">Area personale</Link>
+              {utente.ruolo === "admin" ? (
+                <Link to="/admin" className="nav__account">Pannello</Link>
+              ) : (
+                <Link to="/area-personale" className="nav__account">Area personale</Link>
+              )}
               <button type="button" className="nav__esci" onClick={uscita}>Esci</button>
             </>
           ) : (

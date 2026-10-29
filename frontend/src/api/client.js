@@ -93,3 +93,19 @@ export const valutazioni = {
   crea: (token, prenotazioneId, voto, commento) =>
     richiesta("/valutazioni", { metodo: "POST", token, corpo: { prenotazione_id: prenotazioneId, voto, commento } }),
 };
+
+// Pannello della titolare: tutti gli indirizzi /admin richiedono il ruolo di amministratore
+export const amministrazione = {
+  dashboard: (token, dal, al) => {
+    const parametri = new URLSearchParams();
+    if (dal) parametri.set("dal", dal);
+    if (al) parametri.set("al", al);
+    return richiesta(`/admin/dashboard?${parametri}`, { token });
+  },
+  servizi: (token) => richiesta("/admin/servizi", { token }),
+  iscritti: (token, sessioneId) => richiesta(`/admin/sessioni/${sessioneId}/iscritti`, { token }),
+  nuovaSessione: (token, servizioId, inizio) =>
+    richiesta("/admin/sessioni", { metodo: "POST", token, corpo: { servizio_id: servizioId, inizio } }),
+  annullaSessione: (token, sessioneId) =>
+    richiesta(`/admin/sessioni/${sessioneId}`, { metodo: "PATCH", token, corpo: { stato: "annullata" } }),
+};

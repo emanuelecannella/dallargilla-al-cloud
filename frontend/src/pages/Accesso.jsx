@@ -11,7 +11,7 @@ export default function Accesso() {
   const [errore, setErrore] = useState(null);
   const [invio, setInvio] = useState(false);
 
-  if (utente) return <Navigate to={destinazione} replace />;
+  if (utente) return <Navigate to={utente.ruolo === "admin" && !parametri.get("da") ? "/admin" : destinazione} replace />;
 
   async function invia(evento) {
     evento.preventDefault();
@@ -19,8 +19,9 @@ export default function Accesso() {
     setErrore(null);
     setInvio(true);
     try {
-      await accedi(modulo.get("email"), modulo.get("password"));
-      naviga(destinazione, { replace: true });
+      const profilo = await accedi(modulo.get("email"), modulo.get("password"));
+      // La titolare entra direttamente nel suo pannello
+      naviga(profilo.ruolo === "admin" && !parametri.get("da") ? "/admin" : destinazione, { replace: true });
     } catch (e) {
       setErrore(e.message);
       setInvio(false);

@@ -4,6 +4,7 @@ import Intestazione from "./components/Intestazione.jsx";
 import RottaProtetta from "./components/RottaProtetta.jsx";
 import PiePagina from "./components/PiePagina.jsx";
 import Accesso from "./pages/Accesso.jsx";
+import Pannello from "./pages/admin/Pannello.jsx";
 import AreaPersonale from "./pages/AreaPersonale.jsx";
 import Home from "./pages/Home.jsx";
 import NonTrovata from "./pages/NonTrovata.jsx";
@@ -37,6 +38,10 @@ export default function App() {
           <Route
             path="/area-personale"
             element={<RottaProtetta><AreaPersonale /></RottaProtetta>}
+          />
+          <Route
+            path="/admin"
+            element={<RottaProtetta soloAdmin><Pannello /></RottaProtetta>}
           />
           <Route
             path="/ricevute/:codice"

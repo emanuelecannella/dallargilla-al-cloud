@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { durata, euro, formatoServizio, giorno, orario, postiLiberi, statoPrenotazione } from "./formato.js";
+import { durata, euro, formatoServizio, giorno, orario, inizioConFuso, percentuale, postiLiberi, statoPrenotazione } from "./formato.js";
 
 // Lo spazio prima del simbolo dell'euro è uno spazio "non separabile": lo normalizziamo
 const pulito = (testo) => testo.replace(/\s/g, " ");
@@ -56,5 +56,16 @@ describe("statoPrenotazione", () => {
     expect(statoPrenotazione("in_attesa")).toBe("Da pagare");
     expect(statoPrenotazione("confermata")).toBe("Confermata");
     expect(statoPrenotazione("annullata")).toBe("Annullata");
+  });
+});
+
+describe("pannello della titolare", () => {
+  test("percentuale arrotondata", () => {
+    expect(percentuale(0.756)).toBe("76%");
+    expect(percentuale(0)).toBe("0%");
+  });
+  test("l'ora scelta a Palermo diventa ISO con il fuso giusto, anche con l'ora legale", () => {
+    expect(inizioConFuso("2026-11-07", "10:00")).toBe("2026-11-07T10:00:00+01:00");
+    expect(inizioConFuso("2027-06-12", "18:30")).toBe("2027-06-12T18:30:00+02:00");
   });
 });
