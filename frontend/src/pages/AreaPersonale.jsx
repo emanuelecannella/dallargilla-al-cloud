@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import Campo from "../components/Campo.jsx";
 import ElencoAcquisti from "../components/ElencoAcquisti.jsx";
 import ElencoPrenotazioni from "../components/ElencoPrenotazioni.jsx";
@@ -11,6 +12,9 @@ export default function AreaPersonale() {
   const { utente, aggiornaProfilo } = useAutenticazione();
   const [modifica, setModifica] = useState(false);
   const [esito, setEsito] = useState(null);
+
+  // La titolare non prenota: il suo spazio è il pannello della bottega
+  if (utente.ruolo === "admin") return <Navigate to="/admin" replace />;
 
   async function salva(evento) {
     evento.preventDefault();

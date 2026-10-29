@@ -61,6 +61,7 @@ export default function ElencoAcquisti() {
             </div>
             <div className="prenotazione__lato">
               <span className={`stato stato--${a.stato === "attivo" ? "confermata" : a.stato}`}>{STATI[a.stato]}</span>
+              {a.codice_ricevuta && <Link to={`/ricevute/${a.codice_ricevuta}`}>Ricevuta</Link>}
               {a.stato === "in_attesa" && (
                 <button className="pulsante pulsante--piccolo" onClick={() => paga(a.id)}>Paga</button>
               )}

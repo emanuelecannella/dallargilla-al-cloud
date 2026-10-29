@@ -15,6 +15,7 @@ export default function PannelloPrenotazione({ sessione, servizio, pacchetti = [
   const [ricevuta, setRicevuta] = useState(null);
   const [errore, setErrore] = useState(null);
   const [attesa, setAttesa] = useState(false);
+  const [conPacchetto, setConPacchetto] = useState(pacchetti.length > 0);
   const riquadro = useRef(null);
 
   // All'apertura il pannello scorre in vista, anche se la data scelta era in cima all'elenco
@@ -60,9 +61,8 @@ export default function PannelloPrenotazione({ sessione, servizio, pacchetti = [
 
       {!prenotazione && (
         <form onSubmit={conferma} className="modulo">
-          {servizio.tipo === "coworking" ? (
-            <p>Il turno usa un ingresso della tua membership attiva.</p>
-          ) : (
+          {servizio.tipo === "coworking" && <p>Il turno usa un ingresso della tua membership attiva.</p>}
+          {servizio.tipo !== "coworking" && !conPacchetto && (
             <p>Prezzo di listino: <strong>{euro(servizio.prezzo_cent)}</strong>. Lo sconto Under 26 si applica da solo.</p>
           )}
           {pacchetti.length > 0 && (
@@ -70,16 +70,21 @@ export default function PannelloPrenotazione({ sessione, servizio, pacchetti = [
               <legend>Come vuoi prenotare?</legend>
               {pacchetti.map((a, i) => (
                 <label key={a.id}>
-                  <input type="radio" name="pacchetto" value={a.id} defaultChecked={i === 0} /> Usa il tuo pacchetto «{a.nome}» (già pagato)
+                  <input type="radio" name="pacchetto" value={a.id} defaultChecked={i === 0}
+                    onChange={() => setConPacchetto(true)} /> Usa il tuo pacchetto «{a.nome}» (già pagato)
                 </label>
               ))}
-              <label><input type="radio" name="pacchetto" value="" /> Paga questa esperienza a parte</label>
+              <label>
+                <input type="radio" name="pacchetto" value="" onChange={() => setConPacchetto(false)} /> Paga questa esperienza a parte
+              </label>
             </fieldset>
           )}
-          <div className="campo">
-            <label htmlFor="codice">Codice promozionale (facoltativo)</label>
-            <input id="codice" name="codice" autoComplete="off" />
-          </div>
+          {servizio.tipo !== "coworking" && !conPacchetto && (
+            <div className="campo">
+              <label htmlFor="codice">Codice promozionale (facoltativo)</label>
+              <input id="codice" name="codice" autoComplete="off" />
+            </div>
+          )}
           <div className="azioni">
             <button className="pulsante" type="submit" disabled={attesa}>Conferma prenotazione</button>
             <button className="pulsante pulsante--secondario" type="button" onClick={onChiudi}>Annulla</button>
@@ -90,7 +95,7 @@ export default function PannelloPrenotazione({ sessione, servizio, pacchetti = [
       {prenotazione && !ricevuta && (
         <>
           <dl className="conto">
-            <div><dt>Listino</dt><dd>{euro(prenotazione.prezzo_listino_cent)}</dd></div>
+            {!prenotazione.acquisto_id && <div><dt>Listino</dt><dd>{euro(prenotazione.prezzo_listino_cent)}</dd></div>}
             {prenotazione.sconto_cent > 0 && (
               <div><dt>Sconto {prenotazione.promozione}</dt><dd>− {euro(prenotazione.sconto_cent)}</dd></div>
             )}

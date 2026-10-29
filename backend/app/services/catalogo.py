@@ -177,6 +177,8 @@ def aggiorna_sessione(db: Session, sessione_id: int, dati: SessioneAggiorna) -> 
             "CAPIENZA_INSUFFICIENTE",
             "La nuova capienza è inferiore ai posti già prenotati",
         )
+    annullata_ora = (modifiche.get("stato") == StatoSessione.annullata
+                     and sessione.stato != StatoSessione.annullata)
     for campo, valore in modifiche.items():
         setattr(sessione, campo, valore)
     if sessione.fine <= sessione.inizio:
@@ -184,9 +186,26 @@ def aggiorna_sessione(db: Session, sessione_id: int, dati: SessioneAggiorna) -> 
         raise ErroreApplicativo(
             status.HTTP_400_BAD_REQUEST, "ORARIO_NON_VALIDO", "L'orario di fine deve seguire l'inizio"
         )
+    if annullata_ora:
+        _annulla_prenotazioni_della_sessione(db, sessione)
     db.commit()
     db.refresh(sessione)
     return _in_uscita(db, sessione)
+
+
+def _annulla_prenotazioni_della_sessione(db: Session, sessione: Sessione) -> None:
+    """Se la bottega annulla una data, le prenotazioni attive vengono annullate con lei.
+
+    Gli ingressi delle membership tornano ai clienti; un'esperienza coperta dal pacchetto
+    torna prenotabile, perché il conteggio del pacchetto considera solo le prenotazioni attive.
+    I rimborsi dei pagamenti già effettuati restano fuori dal prototipo (pagamenti simulati).
+    """
+    for p in db.scalars(
+        select(Prenotazione).where(Prenotazione.sessione_id == sessione.id, Prenotazione.stato.in_(STATI_ATTIVI))
+    ):
+        if p.acquisto is not None and p.acquisto.piano_id is not None:
+            p.acquisto.ingressi_residui += 1
+        p.stato = StatoPrenotazione.annullata
 
 
 def iscritti_sessione(db: Session, sessione_id: int) -> list[IscrittoOut]:

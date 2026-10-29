@@ -36,6 +36,12 @@ export function FornitoreAutenticazione({ children }) {
     setUtente(null);
   }, []);
 
+  // Se una chiamata scopre che l'accesso è scaduto, si esce: le pagine protette chiederanno di rientrare
+  useEffect(() => {
+    window.addEventListener("sessione-scaduta", esci);
+    return () => window.removeEventListener("sessione-scaduta", esci);
+  }, [esci]);
+
   // Con un token salvato, chiediamo al server chi siamo: se è scaduto, si esce
   useEffect(() => {
     if (!token) {
@@ -46,7 +52,9 @@ export function FornitoreAutenticazione({ children }) {
     account
       .profilo(token)
       .then((dati) => attivo && setUtente(dati))
-      .catch(() => attivo && esci())
+      // Si esce solo se il server rifiuta il token (401); un problema di rete o una pagina
+      // ricaricata a metà non devono far perdere l'accesso
+      .catch((e) => attivo && e.stato === 401 && esci())
       .finally(() => attivo && setVerifica(false));
     return () => {
       attivo = false;

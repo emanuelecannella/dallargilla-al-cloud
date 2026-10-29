@@ -88,7 +88,10 @@ def acquisto_out(a: Acquisto) -> AcquistoOut:
         prezzo_finale_cent=a.prezzo_finale_cent,
         promozione=a.promozione.nome if a.promozione else None,
         ingressi_residui=a.ingressi_residui, scadenza=a.scadenza,
-        servizi_da_prenotare=_servizi_da_prenotare(a), creato_il=a.creato_il,
+        servizi_da_prenotare=_servizi_da_prenotare(a),
+        codice_ricevuta=next((pg.codice_ricevuta for pg in reversed(a.pagamenti)
+                              if pg.esito == EsitoPagamento.riuscito), None),
+        creato_il=a.creato_il,
     )
 
 

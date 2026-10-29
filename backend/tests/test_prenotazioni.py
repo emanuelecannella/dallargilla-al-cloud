@@ -315,11 +315,13 @@ def test_pacchetto_indica_i_servizi_ancora_da_prenotare(client, bottega, giovane
     pacchetto = bottega.query(Pacchetto).filter_by(slug="giornata-in-bottega").one()
     acquisto = client.post(f"{API}/acquisti", headers=h(giovane[1]), json={"pacchetto_id": pacchetto.id}).json()
     assert sorted(acquisto["servizi_da_prenotare"]) == ["esperienza-decorazione", "esperienza-tornio"]
-    client.post(f"{API}/acquisti/{acquisto['id']}/pagamento", headers=h(giovane[1]), json={})
+    assert acquisto["codice_ricevuta"] is None
+    codice = client.post(f"{API}/acquisti/{acquisto['id']}/pagamento", headers=h(giovane[1]), json={}).json()["codice_ricevuta"]
     s = nuova_sessione(bottega, "esperienza-tornio")
     client.post(f"{API}/prenotazioni", headers=h(giovane[1]), json={"sessione_id": s.id, "acquisto_id": acquisto["id"]})
     miei = client.get(f"{API}/acquisti/miei", headers=h(giovane[1])).json()
     assert miei[0]["servizi_da_prenotare"] == ["esperienza-decorazione"]
+    assert miei[0]["codice_ricevuta"] == codice
 
 
 def test_attivita_svolta_diventa_valutabile_una_volta(client, bottega, adulto):  # RF13, RB07
@@ -334,3 +336,23 @@ def test_attivita_svolta_diventa_valutabile_una_volta(client, bottega, adulto): 
                     json={"prenotazione_id": mia["id"], "voto": 5, "commento": "Esperienza bellissima"})
     assert r.status_code == 201
     assert client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]["valutabile"] is False
+
+
+def test_data_annullata_dalla_bottega_annulla_le_prenotazioni(client, bottega, adulto):  # RF16
+    from app.models import RuoloUtente
+    admin = bottega.query(Utente).filter_by(ruolo=RuoloUtente.admin).one()
+    token_admin = crea_token_accesso(admin.id, "admin")
+    piano = bottega.query(PianoMembership).first()
+    acquisto = client.post(f"{API}/acquisti", headers=h(adulto[1]), json={"piano_id": piano.id}).json()
+    client.post(f"{API}/acquisti/{acquisto['id']}/pagamento", headers=h(adulto[1]), json={})
+    turno = nuova_sessione(bottega, "coworking")
+    client.post(f"{API}/prenotazioni", headers=h(adulto[1]), json={"sessione_id": turno.id})
+    prima = client.get(f"{API}/acquisti/miei", headers=h(adulto[1])).json()[0]["ingressi_residui"]
+
+    r = client.patch(f"{API}/admin/sessioni/{turno.id}", headers=h(token_admin), json={"stato": "annullata"})
+    assert r.status_code == 200
+    mia = client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]
+    assert mia["stato"] == "annullata"
+    dopo = client.get(f"{API}/acquisti/miei", headers=h(adulto[1])).json()[0]["ingressi_residui"]
+    assert dopo == prima + 1  # l'ingresso torna al cliente
+    assert client.get(f"{API}/admin/sessioni/{turno.id}/iscritti", headers=h(token_admin)).json() == []

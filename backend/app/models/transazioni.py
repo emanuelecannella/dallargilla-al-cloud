@@ -62,6 +62,7 @@ class Acquisto(Base):
     piano: Mapped[Optional["PianoMembership"]] = relationship()  # noqa: F821
     promozione: Mapped[Optional["Promozione"]] = relationship()  # noqa: F821
     prenotazioni: Mapped[list["Prenotazione"]] = relationship(back_populates="acquisto")
+    pagamenti: Mapped[list["Pagamento"]] = relationship(back_populates="acquisto")
 
 
 class Prenotazione(Base):
@@ -135,4 +136,4 @@ class Pagamento(Base):
     pagato_il: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     prenotazione: Mapped[Prenotazione | None] = relationship(back_populates="pagamenti")
-    acquisto: Mapped[Acquisto | None] = relationship()
+    acquisto: Mapped[Acquisto | None] = relationship(back_populates="pagamenti")

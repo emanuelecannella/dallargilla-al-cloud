@@ -44,7 +44,13 @@ export default function Calendario() {
   }
 
   async function annulla(d) {
-    if (!window.confirm(`Annullare la data del ${giorno(d.inizio)} (${d.servizio.nome})?`)) return;
+    const iscritti = d.capienza - d.posti_residui;
+    const avviso = iscritti === 1
+      ? " La prenotazione dell'iscritto verrà annullata: ricordati di avvisarlo."
+      : iscritti > 1
+        ? ` Le ${iscritti} prenotazioni verranno annullate: ricordati di avvisare gli iscritti.`
+        : "";
+    if (!window.confirm(`Annullare la data del ${giorno(d.inizio)} (${d.servizio.nome})?${avviso}`)) return;
     try {
       await amministrazione.annullaSessione(token, d.id);
       setMessaggio({ ok: true, testo: "Data annullata: non è più prenotabile." });

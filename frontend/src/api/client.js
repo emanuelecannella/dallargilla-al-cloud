@@ -41,6 +41,10 @@ export async function richiesta(percorso, { metodo = "GET", corpo, token } = {})
   }
   if (risposta.status === 204) return null;
   const dati = await risposta.json().catch(() => null);
+  if (risposta.status === 401 && token) {
+    // Il token è scaduto (dopo 60 minuti) o non è più valido: avvisiamo l'applicazione
+    window.dispatchEvent(new Event("sessione-scaduta"));
+  }
   if (!risposta.ok) {
     const codice = dati?.codice ?? (risposta.status === 422 ? "DATI_NON_VALIDI" : "ERRORE");
     throw new ErroreApi(messaggioErrore(dati), codice, risposta.status);

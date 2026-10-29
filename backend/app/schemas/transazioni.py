@@ -61,6 +61,7 @@ class AcquistoOut(BaseModel):
     scadenza: date | None
     # Solo per i pacchetti: i servizi inclusi non ancora prenotati, da usare con acquisto_id
     servizi_da_prenotare: list[str]
+    codice_ricevuta: str | None
     creato_il: datetime
 
 

@@ -82,11 +82,26 @@ Legenda accesso: **P** pubblico, **C** cliente autenticato, **A** amministratore
 | GET, POST | `/admin/servizi` | A | Elenco e creazione dei servizi | RF15 |
 | PATCH, DELETE | `/admin/servizi/{id}` | A | Modifica o disattivazione | RF15 |
 | POST | `/admin/sessioni` | A | Pubblica una nuova data | RF16 |
-| PATCH | `/admin/sessioni/{id}` | A | Modifica o annulla una data | RF16 |
+| PATCH | `/admin/sessioni/{id}` | A | Modifica o annulla una data (annullandola, si annullano anche le sue prenotazioni) | RF16 |
 | GET | `/admin/sessioni/{id}/iscritti` | A | Elenco iscritti di una data | RF17 |
 | GET, POST | `/admin/promozioni` | A | Elenco e creazione delle promozioni | RF18 |
 | PATCH | `/admin/promozioni/{id}` | A | Modifica o disattiva una promozione | RF18 |
 | GET | `/admin/dashboard?dal=&al=` | A | Indicatori del periodo | RF19 |
+
+## Campi di supporto all'interfaccia
+
+Alcune risposte includono campi calcolati dal server, così il front-end non deve ripetere le regole di business:
+
+| Risposta | Campo | Significato |
+| --- | --- | --- |
+| Prenotazione | `annullabile` | `true` se mancano più di 48 ore all'inizio (RB05) |
+| Prenotazione | `valutabile` | `true` se l'attività è confermata, già svolta e non ancora valutata (RB07) |
+| Prenotazione, Acquisto | `codice_ricevuta` | Codice dell'ultimo pagamento riuscito, oppure `null` |
+| Acquisto | `servizi_da_prenotare` | Per un pacchetto, i servizi inclusi non ancora prenotati (RB04) |
+| Utente, Iscritto | `telefono` | Numero facoltativo, salvato senza spazi né trattini |
+
+Quando la titolare annulla una data, le prenotazioni attive passano allo stato `annullata` e gli ingressi
+delle membership vengono restituiti. I rimborsi dei pagamenti simulati restano fuori dal prototipo.
 
 ## Esempi
 
