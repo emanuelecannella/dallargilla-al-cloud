@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { catalogo } from "../api/client.js";
+import { catalogo, prenotazioni } from "../api/client.js";
+import PannelloPrenotazione from "../components/PannelloPrenotazione.jsx";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 import { useCaricamento } from "../hooks/useCaricamento.js";
 import { euro, formatoServizio, giorno, orario, postiLiberi } from "../utils/formato.js";
@@ -8,20 +9,24 @@ import { euro, formatoServizio, giorno, orario, postiLiberi } from "../utils/for
 // Scheda di un servizio: descrizione, calendario delle prossime date e recensioni (RF02, RF04, RF13)
 export default function Servizio() {
   const { slug } = useParams();
-  const { utente } = useAutenticazione();
+  const { utente, token } = useAutenticazione();
+  const [scelta, setScelta] = useState(null); // la data per cui è aperto il pannello di prenotazione
 
   // Prima serve il servizio (per conoscerne l'id), poi date, recensioni e piani in parallelo
   const carica = useCallback(async () => {
     const servizio = await catalogo.servizio(slug);
-    const [sessioni, valutazioni, piani] = await Promise.all([
+    const [sessioni, valutazioni, piani, mie] = await Promise.all([
       catalogo.sessioni(servizio.id),
       catalogo.valutazioni(servizio.id),
       servizio.tipo === "coworking" ? catalogo.pianiMembership() : Promise.resolve([]),
+      token ? prenotazioni.mie(token) : Promise.resolve([]),
     ]);
-    return { servizio, sessioni, valutazioni, piani };
-  }, [slug]);
+    // Le date in cui il cliente ha già una prenotazione attiva
+    const giaPrenotate = new Set(mie.filter((p) => p.stato !== "annullata").map((p) => p.sessione_id));
+    return { servizio, sessioni, valutazioni, piani, giaPrenotate };
+  }, [slug, token]);
 
-  const { dati, errore, inCaricamento } = useCaricamento(carica);
+  const { dati, errore, inCaricamento, ricarica } = useCaricamento(carica);
 
   if (inCaricamento) return <p className="contenitore sezione">Caricamento…</p>;
   if (errore) {
@@ -34,7 +39,7 @@ export default function Servizio() {
     );
   }
 
-  const { servizio, sessioni, valutazioni, piani } = dati;
+  const { servizio, sessioni, valutazioni, piani, giaPrenotate } = dati;
   const coworking = servizio.tipo === "coworking";
 
   return (
@@ -80,9 +85,23 @@ export default function Servizio() {
                 <span className={`posti ${s.posti_residui <= 1 ? "posti--pochi" : ""}`}>
                   {postiLiberi(s.posti_residui)}
                 </span>
+                {utente && (
+                  <span className="calendario__azione">
+                    {giaPrenotate.has(s.id) ? (
+                      <Link to="/area-personale" className="etichetta etichetta--esperienza">Prenotato ✓</Link>
+                    ) : (
+                      <button className="pulsante pulsante--piccolo" disabled={s.posti_residui === 0}
+                        onClick={() => setScelta(s)}>Prenota</button>
+                    )}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
+        )}
+        {scelta && (
+          <PannelloPrenotazione sessione={scelta} servizio={servizio}
+            onChiudi={() => setScelta(null)} onPrenotata={ricarica} />
         )}
         {!utente && (
           <p className="nota">

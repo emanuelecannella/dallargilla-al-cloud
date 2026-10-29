@@ -46,3 +46,10 @@ export function postiLiberi(residui) {
   if (residui === 1) return "Ultimo posto!";
   return `${residui} posti liberi`;
 }
+
+const STATI = { in_attesa: "Da pagare", confermata: "Confermata", annullata: "Annullata" };
+
+/** Etichetta leggibile dello stato di una prenotazione */
+export function statoPrenotazione(stato) {
+  return STATI[stato] ?? stato;
+}

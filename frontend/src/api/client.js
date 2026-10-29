@@ -63,3 +63,18 @@ export const account = {
   profilo: (token) => richiesta("/utenti/me", { token }),
   aggiornaProfilo: (token, dati) => richiesta("/utenti/me", { metodo: "PATCH", corpo: dati, token }),
 };
+
+export const prenotazioni = {
+  crea: (token, sessioneId, codicePromo) =>
+    richiesta("/prenotazioni", {
+      metodo: "POST",
+      token,
+      corpo: { sessione_id: sessioneId, codice_promo: codicePromo || null },
+    }),
+  mie: (token) => richiesta("/prenotazioni/mie", { token }),
+  annulla: (token, id) => richiesta(`/prenotazioni/${id}`, { metodo: "DELETE", token }),
+  // Pagamento simulato: nel prototipo si sceglie l'esito per provare anche il rifiuto
+  paga: (token, id, esito = "riuscito") =>
+    richiesta(`/prenotazioni/${id}/pagamento`, { metodo: "POST", token, corpo: { esito_simulato: esito } }),
+  ricevuta: (token, codice) => richiesta(`/pagamenti/${encodeURIComponent(codice)}/ricevuta`, { token }),
+};

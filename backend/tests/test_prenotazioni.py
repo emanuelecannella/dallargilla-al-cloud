@@ -284,3 +284,28 @@ def test_acquisto_richiede_un_solo_prodotto(client, bottega, adulto):
     assert client.post(f"{API}/acquisti", headers=h(adulto[1]), json={}).status_code == 422
     assert client.post(f"{API}/acquisti", headers=h(adulto[1]),
                        json={"pacchetto_id": 1, "piano_id": 1}).status_code == 422
+
+
+# --- Dati per l'area personale -----------------------------------------------------
+
+def test_area_personale_riceve_ricevuta_e_annullabilita(client, bottega, adulto):  # RF11
+    lontana = nuova_sessione(bottega, "esperienza-tornio", tra_ore=72)
+    vicina = nuova_sessione(bottega, "esperienza-decorazione", tra_ore=24)
+    p1 = client.post(f"{API}/prenotazioni", headers=h(adulto[1]), json={"sessione_id": lontana.id}).json()
+    p2 = client.post(f"{API}/prenotazioni", headers=h(adulto[1]), json={"sessione_id": vicina.id}).json()
+    assert p1["servizio_slug"] == "esperienza-tornio"
+    assert p1["annullabile"] is True       # mancano più di 48 ore
+    assert p2["annullabile"] is False      # mancano meno di 48 ore (RB05)
+    assert p1["codice_ricevuta"] is None   # non ancora pagata
+
+    codice = client.post(f"{API}/prenotazioni/{p1['id']}/pagamento", headers=h(adulto[1]), json={}).json()["codice_ricevuta"]
+    mie = {p["id"]: p for p in client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()}
+    assert mie[p1["id"]]["codice_ricevuta"] == codice
+
+
+def test_tentativo_fallito_non_produce_ricevuta(client, bottega, adulto):
+    s = nuova_sessione(bottega, "esperienza-tornio")
+    pid = client.post(f"{API}/prenotazioni", headers=h(adulto[1]), json={"sessione_id": s.id}).json()["id"]
+    client.post(f"{API}/prenotazioni/{pid}/pagamento", headers=h(adulto[1]), json={"esito_simulato": "fallito"})
+    mia = client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]
+    assert mia["stato"] == "in_attesa" and mia["codice_ricevuta"] is None

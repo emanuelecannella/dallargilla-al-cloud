@@ -55,13 +55,22 @@ def _codice_ricevuta() -> str:
 
 # --- Conversioni in uscita --------------------------------------------------------
 
+def _annullabile(p: Prenotazione) -> bool:
+    """Stessa regola usata da annulla_prenotazione: fino a 48 ore prima dell'inizio (RB05)."""
+    return (p.stato != StatoPrenotazione.annullata
+            and p.sessione.inizio - _adesso() >= timedelta(hours=ORE_CANCELLAZIONE_GRATUITA))
+
+
 def prenotazione_out(p: Prenotazione) -> PrenotazioneOut:
+    riusciti = [pg for pg in p.pagamenti if pg.esito == EsitoPagamento.riuscito]
     return PrenotazioneOut(
         id=p.id, stato=p.stato, sessione_id=p.sessione_id, servizio=p.sessione.servizio.nome,
+        servizio_slug=p.sessione.servizio.slug,
         inizio=p.sessione.inizio, fine=p.sessione.fine, prezzo_listino_cent=p.prezzo_listino_cent,
         sconto_cent=p.sconto_cent, prezzo_finale_cent=p.prezzo_finale_cent,
         promozione=p.promozione.nome if p.promozione else None, acquisto_id=p.acquisto_id,
-        creata_il=p.creata_il,
+        codice_ricevuta=riusciti[-1].codice_ricevuta if riusciti else None,
+        annullabile=_annullabile(p), creata_il=p.creata_il,
     )
 
 

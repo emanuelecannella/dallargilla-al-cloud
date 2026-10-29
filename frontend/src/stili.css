@@ -136,3 +136,38 @@ button.pulsante:disabled { opacity: 0.6; cursor: wait; }
 @media (min-width: 640px) { .profilo { grid-template-columns: 1fr 1fr; } }
 .profilo dt { font-size: 0.75rem; text-transform: uppercase; color: var(--testo-tenue); }
 .profilo dd { margin: 0; font-weight: 600; }
+
+/* Prenotazione dal calendario */
+.calendario li { grid-template-columns: 1fr auto auto; }
+.calendario__azione { grid-column: 3; grid-row: 1 / span 2; }
+.pulsante--piccolo { padding: 6px 14px; margin-top: 0; font-size: 0.9rem; }
+.pannello { margin-top: 20px; background: #fff; border: 2px solid var(--terracotta); border-radius: var(--raggio); padding: 20px; display: grid; gap: 8px; }
+.pannello h3 { margin: 0; }
+.conto { display: grid; gap: 6px; margin: 8px 0; }
+.conto div { display: flex; justify-content: space-between; gap: 12px; }
+.conto dt { color: var(--testo-tenue); }
+.conto dd { margin: 0; }
+.conto__totale { border-top: 1px dashed var(--sabbia); padding-top: 6px; font-weight: 700; font-size: 1.1rem; }
+.avviso--ok { background: #e3ecd9; color: #2f5233; }
+.avviso--ok p { margin: 4px 0; }
+
+/* Prenotazioni nell'area personale */
+.prenotazioni { list-style: none; padding: 0; display: grid; gap: 10px; }
+.prenotazione { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 12px 16px; }
+.prenotazione > div:first-child { display: grid; gap: 2px; }
+.prenotazione__nome { font-weight: 600; text-decoration: none; color: var(--testo); }
+.prenotazione__lato { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.prenotazione--annullata { opacity: 0.6; }
+.stato { font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--sabbia); }
+.stato--in_attesa { background: #f9eeda; color: #7a4b00; }
+.stato--confermata { background: #e3ecd9; color: #2f5233; }
+.link-pulsante { background: none; border: none; color: var(--terracotta-scuro); text-decoration: underline; cursor: pointer; font: inherit; padding: 0; }
+
+/* Ricevuta */
+.ricevuta { background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 24px; margin: 16px 0; }
+.ricevuta dl { display: grid; gap: 10px; }
+.ricevuta dl div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dotted var(--sabbia); padding-bottom: 6px; }
+.ricevuta dt { color: var(--testo-tenue); }
+.ricevuta dd { margin: 0; font-weight: 600; text-align: right; }
+.ricevuta__totale { font-size: 1.2rem; }
+@media print { .intestazione, .pie, .non-stampare, .indietro { display: none; } .ricevuta { border: none; } }

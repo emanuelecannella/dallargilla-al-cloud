@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { durata, euro, formatoServizio, giorno, orario, postiLiberi } from "./formato.js";
+import { durata, euro, formatoServizio, giorno, orario, postiLiberi, statoPrenotazione } from "./formato.js";
 
 // Lo spazio prima del simbolo dell'euro è uno spazio "non separabile": lo normalizziamo
 const pulito = (testo) => testo.replace(/\s/g, " ");
@@ -48,5 +48,13 @@ describe("postiLiberi", () => {
     expect(postiLiberi(0)).toBe("Esaurito");
     expect(postiLiberi(1)).toBe("Ultimo posto!");
     expect(postiLiberi(4)).toBe("4 posti liberi");
+  });
+});
+
+describe("statoPrenotazione", () => {
+  test("traduce gli stati del back-end in parole per il cliente", () => {
+    expect(statoPrenotazione("in_attesa")).toBe("Da pagare");
+    expect(statoPrenotazione("confermata")).toBe("Confermata");
+    expect(statoPrenotazione("annullata")).toBe("Annullata");
   });
 });

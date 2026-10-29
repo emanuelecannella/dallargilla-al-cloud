@@ -19,6 +19,7 @@ class PrenotazioneOut(BaseModel):
     stato: StatoPrenotazione
     sessione_id: int
     servizio: str
+    servizio_slug: str
     inizio: datetime
     fine: datetime
     prezzo_listino_cent: int
@@ -26,6 +27,10 @@ class PrenotazioneOut(BaseModel):
     prezzo_finale_cent: int
     promozione: str | None
     acquisto_id: int | None
+    # Codice dell'ultimo pagamento riuscito, per aprire la ricevuta dall'area personale
+    codice_ricevuta: str | None
+    # Vero se la prenotazione si può ancora annullare gratuitamente (RB05)
+    annullabile: bool
     creata_il: datetime
 
 

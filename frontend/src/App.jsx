@@ -8,6 +8,7 @@ import AreaPersonale from "./pages/AreaPersonale.jsx";
 import Home from "./pages/Home.jsx";
 import NonTrovata from "./pages/NonTrovata.jsx";
 import Registrazione from "./pages/Registrazione.jsx";
+import Ricevuta from "./pages/Ricevuta.jsx";
 import Servizio from "./pages/Servizio.jsx";
 
 // Ogni cambio di pagina riparte dall'alto; con un'ancora (#servizi) scorre fino alla sezione
@@ -36,6 +37,10 @@ export default function App() {
           <Route
             path="/area-personale"
             element={<RottaProtetta><AreaPersonale /></RottaProtetta>}
+          />
+          <Route
+            path="/ricevute/:codice"
+            element={<RottaProtetta><Ricevuta /></RottaProtetta>}
           />
           <Route path="*" element={<NonTrovata />} />
         </Routes>
