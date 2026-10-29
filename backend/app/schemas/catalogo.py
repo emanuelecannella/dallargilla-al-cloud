@@ -83,6 +83,7 @@ class IscrittoOut(BaseModel):
     nome: str
     cognome: str
     email: str
+    telefono: str | None
     stato_prenotazione: str
 
 

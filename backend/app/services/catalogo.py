@@ -202,7 +202,7 @@ def iscritti_sessione(db: Session, sessione_id: int) -> list[IscrittoOut]:
     return [
         IscrittoOut(
             prenotazione_id=p.id, utente_id=u.id, nome=u.nome, cognome=u.cognome,
-            email=u.email, stato_prenotazione=p.stato.value,
+            email=u.email, telefono=u.telefono, stato_prenotazione=p.stato.value,
         )
         for p, u in righe
     ]

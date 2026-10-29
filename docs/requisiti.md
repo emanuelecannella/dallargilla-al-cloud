@@ -53,7 +53,7 @@ Oggi una prenotazione segue questo percorso:
 
 | Codice | Requisito | Attore |
 | --- | --- | --- |
-| RF05 | Registrarsi con nome, cognome, email, password e data di nascita | Visitatore |
+| RF05 | Registrarsi con nome, cognome, email, password e data di nascita; telefono facoltativo | Visitatore |
 | RF06 | Accedere e uscire dall'area personale | Cliente |
 | RF07 | Visualizzare e modificare i propri dati personali | Cliente |
 | RF08 | Prenotare una data di un corso o di un'esperienza | Cliente |

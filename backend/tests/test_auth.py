@@ -125,3 +125,38 @@ def test_cambio_password_richiede_quella_attuale(client, token_giulia):
     assert giusto.status_code == 200
     nuovo_login = client.post(LOGIN, json={"email": DATI_GIULIA["email"], "password": "tornio2026"})
     assert nuovo_login.status_code == 200
+
+
+# --- Telefono facoltativo --------------------------------------------------------
+
+def test_telefono_facoltativo(client):
+    risposta = client.post(REGISTRAZIONE, json=DATI_GIULIA)
+    assert risposta.status_code == 201
+    assert risposta.json()["telefono"] is None
+
+
+def test_telefono_salvato_senza_spazi_e_trattini(client):
+    dati = {**DATI_GIULIA, "telefono": "+39 333-123 4567"}
+    risposta = client.post(REGISTRAZIONE, json=dati)
+    assert risposta.status_code == 201
+    assert risposta.json()["telefono"] == "+393331234567"
+
+
+def test_telefono_non_valido_rifiutato(client):
+    for sbagliato in ["ciao", "12345", "+39 333 abc 4567"]:
+        risposta = client.post(REGISTRAZIONE, json={**DATI_GIULIA, "telefono": sbagliato})
+        assert risposta.status_code == 422, sbagliato
+
+
+def test_telefono_aggiunto_e_cancellato_dal_profilo(client, token_giulia):
+    h = intestazione(token_giulia)
+    aggiunto = client.patch(PROFILO, headers=h, json={"telefono": "091 1234567"})
+    assert aggiunto.json()["telefono"] == "0911234567"
+
+    # Modificare un altro campo non tocca il telefono
+    altro = client.patch(PROFILO, headers=h, json={"nome": "Giulia Maria"})
+    assert altro.json()["telefono"] == "0911234567"
+
+    # Un campo vuoto cancella il numero
+    cancellato = client.patch(PROFILO, headers=h, json={"telefono": ""})
+    assert cancellato.json()["telefono"] is None

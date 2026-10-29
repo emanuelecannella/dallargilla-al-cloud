@@ -92,6 +92,6 @@ docker compose run --rm backend python -m app.seed
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
-- [x] Back-end e database: tutte le 30 operazioni della [specifica API](docs/api.md), 62 test automatici
-- [ ] Front-end (in corso): vetrina con catalogo, scheda di ogni servizio con calendario delle date e recensioni
+- [x] Back-end e database: tutte le 30 operazioni della [specifica API](docs/api.md), 66 test automatici
+- [ ] Front-end (in corso): vetrina con catalogo, scheda di ogni servizio con calendario delle date e recensioni, registrazione, accesso e area personale con i dati del profilo
 - [ ] Test funzionali e documentazione

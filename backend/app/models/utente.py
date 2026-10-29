@@ -17,6 +17,8 @@ class Utente(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     nome: Mapped[str] = mapped_column(String(80))
     cognome: Mapped[str] = mapped_column(String(80))
+    # Facoltativo: serve alla titolare per avvisare gli iscritti in caso di imprevisti
+    telefono: Mapped[str | None] = mapped_column(String(20), nullable=True)
     # Serve per la promozione "Giovani in bottega" (RB03)
     data_nascita: Mapped[date] = mapped_column(Date)
     ruolo: Mapped[RuoloUtente] = mapped_column(

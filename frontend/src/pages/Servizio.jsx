@@ -1,12 +1,14 @@
 import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { catalogo } from "../api/client.js";
+import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 import { useCaricamento } from "../hooks/useCaricamento.js";
 import { euro, formatoServizio, giorno, orario, postiLiberi } from "../utils/formato.js";
 
 // Scheda di un servizio: descrizione, calendario delle prossime date e recensioni (RF02, RF04, RF13)
 export default function Servizio() {
   const { slug } = useParams();
+  const { utente } = useAutenticazione();
 
   // Prima serve il servizio (per conoscerne l'id), poi date, recensioni e piani in parallelo
   const carica = useCallback(async () => {
@@ -82,7 +84,12 @@ export default function Servizio() {
             ))}
           </ul>
         )}
-        <p className="nota">Per prenotare un posto serve un account: l'accesso all'area personale è in arrivo.</p>
+        {!utente && (
+          <p className="nota">
+            Per prenotare un posto <Link to={`/accesso?da=/servizi/${servizio.slug}`}>accedi</Link> oppure{" "}
+            <Link to={`/registrazione?da=/servizi/${servizio.slug}`}>crea un account</Link>.
+          </p>
+        )}
       </section>
 
       <section className="blocco">

@@ -1,4 +1,5 @@
 """Schemi Pydantic: definiscono e validano i dati in ingresso e in uscita delle API utente."""
+import re
 from datetime import date, datetime
 from typing import Annotated
 
@@ -28,9 +29,22 @@ def _controlla_data_nascita(valore: date) -> date:
     return valore
 
 
+def _controlla_telefono(valore: str | None) -> str | None:
+    """Accetta numeri come "+39 333 123 4567" o "091-1234567" e li salva senza spazi né trattini."""
+    if valore is None:
+        return None
+    numero = re.sub(r"[\s\-./()]", "", valore)
+    if numero == "":
+        return None  # campo lasciato vuoto: il telefono è facoltativo
+    if not re.fullmatch(r"\+?\d{6,15}", numero):
+        raise ValueError("Il numero di telefono non è valido")
+    return numero
+
+
 # Tipi riutilizzabili: il validatore viene applicato ovunque il tipo è usato
 Password = Annotated[str, Field(min_length=8), AfterValidator(_controlla_password)]
 DataNascita = Annotated[date, AfterValidator(_controlla_data_nascita)]
+Telefono = Annotated[str | None, Field(max_length=30), AfterValidator(_controlla_telefono)]
 
 
 class RegistrazioneIn(BaseModel):
@@ -39,6 +53,7 @@ class RegistrazioneIn(BaseModel):
     nome: str = Field(min_length=1, max_length=80)
     cognome: str = Field(min_length=1, max_length=80)
     data_nascita: DataNascita
+    telefono: Telefono = None
     consenso_privacy: bool
 
     @field_validator("consenso_privacy")
@@ -78,6 +93,7 @@ class UtenteOut(BaseModel):
     nome: str
     cognome: str
     data_nascita: date
+    telefono: str | None
     ruolo: RuoloUtente
     creato_il: datetime
 
@@ -88,5 +104,7 @@ class UtenteAggiorna(BaseModel):
     nome: str | None = Field(default=None, min_length=1, max_length=80)
     cognome: str | None = Field(default=None, min_length=1, max_length=80)
     data_nascita: DataNascita | None = None
+    # Una stringa vuota cancella il numero: il telefono è facoltativo
+    telefono: Telefono = None
     password_attuale: str | None = None
     nuova_password: Password | None = None

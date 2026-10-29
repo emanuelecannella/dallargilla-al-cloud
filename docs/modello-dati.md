@@ -29,6 +29,7 @@ erDiagram
         string nome
         string cognome
         date data_nascita
+        string telefono "facoltativo"
         enum ruolo
         bool consenso_privacy
     }

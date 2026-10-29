@@ -29,6 +29,7 @@ def registra_utente(db: Session, dati: RegistrazioneIn) -> Utente:
         nome=dati.nome,
         cognome=dati.cognome,
         data_nascita=dati.data_nascita,
+        telefono=dati.telefono,
         ruolo=RuoloUtente.cliente,  # dalla registrazione pubblica nascono solo clienti
         consenso_privacy=dati.consenso_privacy,
     )
@@ -56,6 +57,9 @@ def aggiorna_profilo(db: Session, utente: Utente, dati: UtenteAggiorna) -> Utent
         utente.cognome = dati.cognome.strip()
     if dati.data_nascita is not None:
         utente.data_nascita = dati.data_nascita
+    if "telefono" in dati.model_fields_set:
+        # Si aggiorna solo se il campo è stato inviato; vuoto significa "cancella il numero"
+        utente.telefono = dati.telefono
 
     if dati.nuova_password is not None:
         # Per cambiare password bisogna dimostrare di conoscere quella attuale

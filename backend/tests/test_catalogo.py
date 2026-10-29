@@ -167,3 +167,4 @@ def test_capienza_non_scende_sotto_i_prenotati_e_iscritti(client, catalogo, toke
 
     iscritti = client.get(f"/api/v1/admin/sessioni/{sessione.id}/iscritti", headers=h(token_admin)).json()
     assert [i["cognome"] for i in iscritti] == ["Bianchi", "Rossi"]  # in ordine alfabetico
+    assert all("telefono" in i for i in iscritti)  # la titolare vede anche il telefono, se indicato
