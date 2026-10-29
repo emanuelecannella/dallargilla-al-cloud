@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { prenotazioni } from "../api/client.js";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 import { useCaricamento } from "../hooks/useCaricamento.js";
+import ModuloRecensione from "./ModuloRecensione.jsx";
 import { euro, giorno, orario, statoPrenotazione } from "../utils/formato.js";
 
 // Prenotazioni del cliente (RF11): prossime e passate, con pagamento, annullamento e ricevuta
@@ -44,7 +45,7 @@ export default function ElencoPrenotazioni() {
         <Link to={`/servizi/${p.servizio_slug}`} className="prenotazione__nome">{p.servizio}</Link>
         <span className="nota">{giorno(p.inizio)} · {orario(p.inizio, p.fine)}</span>
         <span className="nota">
-          {euro(p.prezzo_finale_cent)}
+          {p.acquisto_id ? "Inclusa nel tuo pacchetto o nella tua membership" : euro(p.prezzo_finale_cent)}
           {p.sconto_cent > 0 && ` (sconto ${p.promozione}: −${euro(p.sconto_cent)})`}
         </span>
       </div>
@@ -66,6 +67,10 @@ export default function ElencoPrenotazioni() {
         )}
         {!p.annullabile && p.stato !== "annullata" && new Date(p.inizio) >= adesso && (
           <small className="nota">Non più annullabile (meno di 48 ore)</small>
+        )}
+        {p.valutabile && (
+          <ModuloRecensione prenotazioneId={p.id}
+            dopoInvio={() => { setMessaggio({ ok: true, testo: "Grazie per la tua recensione!" }); ricarica(); }} />
         )}
       </div>
     </li>

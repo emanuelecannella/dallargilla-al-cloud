@@ -31,6 +31,8 @@ class PrenotazioneOut(BaseModel):
     codice_ricevuta: str | None
     # Vero se la prenotazione si può ancora annullare gratuitamente (RB05)
     annullabile: bool
+    # Vero se l'attività è confermata, già svolta e non ancora valutata (RF13, RB07)
+    valutabile: bool
     creata_il: datetime
 
 
@@ -57,6 +59,8 @@ class AcquistoOut(BaseModel):
     promozione: str | None
     ingressi_residui: int | None
     scadenza: date | None
+    # Solo per i pacchetti: i servizi inclusi non ancora prenotati, da usare con acquisto_id
+    servizi_da_prenotare: list[str]
     creato_il: datetime
 
 

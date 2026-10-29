@@ -61,6 +61,12 @@ def _annullabile(p: Prenotazione) -> bool:
             and p.sessione.inizio - _adesso() >= timedelta(hours=ORE_CANCELLAZIONE_GRATUITA))
 
 
+def _valutabile(p: Prenotazione) -> bool:
+    """Stessa regola di crea_valutazione: confermata, già svolta, valutata una sola volta (RB07)."""
+    return (p.stato == StatoPrenotazione.confermata and p.sessione.fine <= _adesso()
+            and p.valutazione is None)
+
+
 def prenotazione_out(p: Prenotazione) -> PrenotazioneOut:
     riusciti = [pg for pg in p.pagamenti if pg.esito == EsitoPagamento.riuscito]
     return PrenotazioneOut(
@@ -70,7 +76,7 @@ def prenotazione_out(p: Prenotazione) -> PrenotazioneOut:
         sconto_cent=p.sconto_cent, prezzo_finale_cent=p.prezzo_finale_cent,
         promozione=p.promozione.nome if p.promozione else None, acquisto_id=p.acquisto_id,
         codice_ricevuta=riusciti[-1].codice_ricevuta if riusciti else None,
-        annullabile=_annullabile(p), creata_il=p.creata_il,
+        annullabile=_annullabile(p), valutabile=_valutabile(p), creata_il=p.creata_il,
     )
 
 
@@ -81,8 +87,17 @@ def acquisto_out(a: Acquisto) -> AcquistoOut:
         prezzo_listino_cent=a.prezzo_listino_cent, sconto_cent=a.sconto_cent,
         prezzo_finale_cent=a.prezzo_finale_cent,
         promozione=a.promozione.nome if a.promozione else None,
-        ingressi_residui=a.ingressi_residui, scadenza=a.scadenza, creato_il=a.creato_il,
+        ingressi_residui=a.ingressi_residui, scadenza=a.scadenza,
+        servizi_da_prenotare=_servizi_da_prenotare(a), creato_il=a.creato_il,
     )
+
+
+def _servizi_da_prenotare(a: Acquisto) -> list[str]:
+    """Slug dei servizi del pacchetto non ancora usati: ognuno vale una sola prenotazione (RB04)."""
+    if a.pacchetto is None:
+        return []
+    usati = {p.sessione.servizio_id for p in a.prenotazioni if p.stato in STATI_ATTIVI}
+    return [s.slug for s in a.pacchetto.servizi if s.id not in usati]
 
 
 # --- Prenotazioni -------------------------------------------------------------------

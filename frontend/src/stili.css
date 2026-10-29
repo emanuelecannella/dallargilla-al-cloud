@@ -171,3 +171,15 @@ button.pulsante:disabled { opacity: 0.6; cursor: wait; }
 .ricevuta dd { margin: 0; font-weight: 600; text-align: right; }
 .ricevuta__totale { font-size: 1.2rem; }
 @media print { .intestazione, .pie, .non-stampare, .indietro { display: none; } .ricevuta { border: none; } }
+
+/* Pacchetti, membership e recensioni */
+.acquisto { margin-top: 12px; }
+.piani { list-style: none; padding: 0; display: grid; gap: 10px; }
+.piani li { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid var(--sabbia); border-radius: var(--raggio); padding: 10px 16px; }
+.piani .acquisto { margin-top: 0; }
+.scelta-pagamento { border: 1px solid var(--sabbia); border-radius: 8px; padding: 10px 14px; display: grid; gap: 6px; }
+.scelta-pagamento legend { font-weight: 600; padding: 0 4px; }
+.recensione-modulo { display: grid; gap: 8px; width: 100%; }
+.recensione-modulo textarea { font: inherit; padding: 8px 10px; border: 1px solid var(--sabbia); border-radius: 8px; }
+.stelle-scelta button { background: none; border: none; font-size: 1.6rem; color: var(--sabbia); cursor: pointer; padding: 0 2px; }
+.stelle-scelta button.piena { color: #c98a2b; }

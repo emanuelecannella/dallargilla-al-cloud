@@ -309,3 +309,28 @@ def test_tentativo_fallito_non_produce_ricevuta(client, bottega, adulto):
     client.post(f"{API}/prenotazioni/{pid}/pagamento", headers=h(adulto[1]), json={"esito_simulato": "fallito"})
     mia = client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]
     assert mia["stato"] == "in_attesa" and mia["codice_ricevuta"] is None
+
+
+def test_pacchetto_indica_i_servizi_ancora_da_prenotare(client, bottega, giovane):  # RB04
+    pacchetto = bottega.query(Pacchetto).filter_by(slug="giornata-in-bottega").one()
+    acquisto = client.post(f"{API}/acquisti", headers=h(giovane[1]), json={"pacchetto_id": pacchetto.id}).json()
+    assert sorted(acquisto["servizi_da_prenotare"]) == ["esperienza-decorazione", "esperienza-tornio"]
+    client.post(f"{API}/acquisti/{acquisto['id']}/pagamento", headers=h(giovane[1]), json={})
+    s = nuova_sessione(bottega, "esperienza-tornio")
+    client.post(f"{API}/prenotazioni", headers=h(giovane[1]), json={"sessione_id": s.id, "acquisto_id": acquisto["id"]})
+    miei = client.get(f"{API}/acquisti/miei", headers=h(giovane[1])).json()
+    assert miei[0]["servizi_da_prenotare"] == ["esperienza-decorazione"]
+
+
+def test_attivita_svolta_diventa_valutabile_una_volta(client, bottega, adulto):  # RF13, RB07
+    passata = nuova_sessione(bottega, "esperienza-tornio", tra_ore=-48)
+    bottega.add(Prenotazione(utente_id=adulto[0].id, sessione_id=passata.id, stato=StatoPrenotazione.confermata,
+                             prezzo_listino_cent=6000, sconto_cent=0, prezzo_finale_cent=6000))
+    bottega.commit()
+    mia = client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]
+    assert mia["valutabile"] is True and mia["annullabile"] is False
+
+    r = client.post(f"{API}/valutazioni", headers=h(adulto[1]),
+                    json={"prenotazione_id": mia["id"], "voto": 5, "commento": "Esperienza bellissima"})
+    assert r.status_code == 201
+    assert client.get(f"{API}/prenotazioni/mie", headers=h(adulto[1])).json()[0]["valutabile"] is False

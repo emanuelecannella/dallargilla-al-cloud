@@ -9,7 +9,7 @@ import { euro, giorno, orario } from "../utils/formato.js";
  * 1) riepilogo e codice promozionale facoltativo, 2) pagamento simulato, 3) conferma con ricevuta.
  * Il prezzo e lo sconto li calcola sempre il server: il front-end li mostra soltanto.
  */
-export default function PannelloPrenotazione({ sessione, servizio, onChiudi, onPrenotata }) {
+export default function PannelloPrenotazione({ sessione, servizio, pacchetti = [], onChiudi, onPrenotata }) {
   const { token } = useAutenticazione();
   const [prenotazione, setPrenotazione] = useState(null);
   const [ricevuta, setRicevuta] = useState(null);
@@ -36,9 +36,11 @@ export default function PannelloPrenotazione({ sessione, servizio, onChiudi, onP
 
   const conferma = (evento) => {
     evento.preventDefault();
-    const codice = new FormData(evento.currentTarget).get("codice")?.trim();
+    const modulo = new FormData(evento.currentTarget);
+    const codice = modulo.get("codice")?.trim();
+    const pacchetto = modulo.get("pacchetto"); // "" = paga la singola esperienza
     esegui(async () => {
-      const nuova = await prenotazioni.crea(token, sessione.id, codice);
+      const nuova = await prenotazioni.crea(token, sessione.id, codice, pacchetto ? Number(pacchetto) : null);
       setPrenotazione(nuova);
       onPrenotata();
     });
@@ -58,7 +60,22 @@ export default function PannelloPrenotazione({ sessione, servizio, onChiudi, onP
 
       {!prenotazione && (
         <form onSubmit={conferma} className="modulo">
-          <p>Prezzo di listino: <strong>{euro(servizio.prezzo_cent)}</strong>. Lo sconto Under 26 si applica da solo.</p>
+          {servizio.tipo === "coworking" ? (
+            <p>Il turno usa un ingresso della tua membership attiva.</p>
+          ) : (
+            <p>Prezzo di listino: <strong>{euro(servizio.prezzo_cent)}</strong>. Lo sconto Under 26 si applica da solo.</p>
+          )}
+          {pacchetti.length > 0 && (
+            <fieldset className="scelta-pagamento">
+              <legend>Come vuoi prenotare?</legend>
+              {pacchetti.map((a, i) => (
+                <label key={a.id}>
+                  <input type="radio" name="pacchetto" value={a.id} defaultChecked={i === 0} /> Usa il tuo pacchetto «{a.nome}» (già pagato)
+                </label>
+              ))}
+              <label><input type="radio" name="pacchetto" value="" /> Paga questa esperienza a parte</label>
+            </fieldset>
+          )}
           <div className="campo">
             <label htmlFor="codice">Codice promozionale (facoltativo)</label>
             <input id="codice" name="codice" autoComplete="off" />

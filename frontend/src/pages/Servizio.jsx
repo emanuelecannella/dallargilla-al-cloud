@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { catalogo, prenotazioni } from "../api/client.js";
+import { acquisti, catalogo, prenotazioni } from "../api/client.js";
+import AcquistoProdotto from "../components/AcquistoProdotto.jsx";
 import PannelloPrenotazione from "../components/PannelloPrenotazione.jsx";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 import { useCaricamento } from "../hooks/useCaricamento.js";
@@ -15,15 +16,19 @@ export default function Servizio() {
   // Prima serve il servizio (per conoscerne l'id), poi date, recensioni e piani in parallelo
   const carica = useCallback(async () => {
     const servizio = await catalogo.servizio(slug);
-    const [sessioni, valutazioni, piani, mie] = await Promise.all([
+    const [sessioni, valutazioni, piani, mie, miei] = await Promise.all([
       catalogo.sessioni(servizio.id),
       catalogo.valutazioni(servizio.id),
       servizio.tipo === "coworking" ? catalogo.pianiMembership() : Promise.resolve([]),
       token ? prenotazioni.mie(token) : Promise.resolve([]),
+      token ? acquisti.miei(token) : Promise.resolve([]),
     ]);
     // Le date in cui il cliente ha già una prenotazione attiva
     const giaPrenotate = new Set(mie.filter((p) => p.stato !== "annullata").map((p) => p.sessione_id));
-    return { servizio, sessioni, valutazioni, piani, giaPrenotate };
+    // Pacchetti pagati che includono questo servizio e non l'hanno ancora usato
+    const pacchetti = miei.filter((a) => a.stato === "attivo" && a.servizi_da_prenotare.includes(servizio.slug));
+    const membership = miei.filter((a) => a.tipo === "membership" && a.stato === "attivo");
+    return { servizio, sessioni, valutazioni, piani, giaPrenotate, pacchetti, membership };
   }, [slug, token]);
 
   const { dati, errore, inCaricamento, ricarica } = useCaricamento(carica);
@@ -39,7 +44,7 @@ export default function Servizio() {
     );
   }
 
-  const { servizio, sessioni, valutazioni, piani, giaPrenotate } = dati;
+  const { servizio, sessioni, valutazioni, piani, giaPrenotate, pacchetti, membership } = dati;
   const coworking = servizio.tipo === "coworking";
 
   return (
@@ -59,10 +64,17 @@ export default function Servizio() {
         <section className="blocco">
           <h2>Le membership</h2>
           <p>Il coworking è riservato a chi ha una membership: ogni turno prenotato usa un ingresso.</p>
+          {membership.map((m) => (
+            <p key={m.id} className="avviso avviso--ok">
+              La tua {m.nome} è attiva: {m.ingressi_residui} ingressi rimasti, valida fino al{" "}
+              {new Date(m.scadenza).toLocaleDateString("it-IT")}.
+            </p>
+          ))}
           <ul className="piani">
             {piani.map((piano) => (
               <li key={piano.id}>
-                <strong>{piano.nome}</strong> · {piano.ingressi} ingressi · {euro(piano.prezzo_cent)}
+                <span><strong>{piano.nome}</strong> · {piano.ingressi} ingressi in {piano.durata_giorni} giorni · {euro(piano.prezzo_cent)}</span>
+                <AcquistoProdotto prodotto={{ piano_id: piano.id }} nome={piano.nome} prezzoCent={piano.prezzo_cent} dopoAcquisto={ricarica} />
               </li>
             ))}
           </ul>
@@ -100,7 +112,7 @@ export default function Servizio() {
           </ul>
         )}
         {scelta && (
-          <PannelloPrenotazione sessione={scelta} servizio={servizio}
+          <PannelloPrenotazione sessione={scelta} servizio={servizio} pacchetti={pacchetti}
             onChiudi={() => setScelta(null)} onPrenotata={ricarica} />
         )}
         {!utente && (

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Campo from "../components/Campo.jsx";
+import ElencoAcquisti from "../components/ElencoAcquisti.jsx";
 import ElencoPrenotazioni from "../components/ElencoPrenotazioni.jsx";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 
 const formatoData = new Intl.DateTimeFormat("it-IT", { day: "numeric", month: "long", year: "numeric" });
 
-// Area personale del cliente: dati del profilo (RF07) e prenotazioni (RF11)
+// Area personale del cliente: dati del profilo (RF07), prenotazioni (RF11), pacchetti e membership (RF09)
 export default function AreaPersonale() {
   const { utente, aggiornaProfilo } = useAutenticazione();
   const [modifica, setModifica] = useState(false);
@@ -61,6 +62,11 @@ export default function AreaPersonale() {
       <section className="blocco">
         <h2>Le tue prenotazioni</h2>
         <ElencoPrenotazioni />
+      </section>
+
+      <section className="blocco">
+        <h2>Pacchetti e membership</h2>
+        <ElencoAcquisti />
       </section>
     </section>
   );

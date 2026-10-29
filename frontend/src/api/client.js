@@ -65,11 +65,12 @@ export const account = {
 };
 
 export const prenotazioni = {
-  crea: (token, sessioneId, codicePromo) =>
+  // acquistoId è facoltativo: indica il pacchetto già pagato che copre la prenotazione
+  crea: (token, sessioneId, codicePromo, acquistoId = null) =>
     richiesta("/prenotazioni", {
       metodo: "POST",
       token,
-      corpo: { sessione_id: sessioneId, codice_promo: codicePromo || null },
+      corpo: { sessione_id: sessioneId, codice_promo: codicePromo || null, acquisto_id: acquistoId },
     }),
   mie: (token) => richiesta("/prenotazioni/mie", { token }),
   annulla: (token, id) => richiesta(`/prenotazioni/${id}`, { metodo: "DELETE", token }),
@@ -77,4 +78,18 @@ export const prenotazioni = {
   paga: (token, id, esito = "riuscito") =>
     richiesta(`/prenotazioni/${id}/pagamento`, { metodo: "POST", token, corpo: { esito_simulato: esito } }),
   ricevuta: (token, codice) => richiesta(`/pagamenti/${encodeURIComponent(codice)}/ricevuta`, { token }),
+};
+
+export const acquisti = {
+  // prodotto: { pacchetto_id } oppure { piano_id }
+  crea: (token, prodotto, codicePromo) =>
+    richiesta("/acquisti", { metodo: "POST", token, corpo: { ...prodotto, codice_promo: codicePromo || null } }),
+  miei: (token) => richiesta("/acquisti/miei", { token }),
+  paga: (token, id, esito = "riuscito") =>
+    richiesta(`/acquisti/${id}/pagamento`, { metodo: "POST", token, corpo: { esito_simulato: esito } }),
+};
+
+export const valutazioni = {
+  crea: (token, prenotazioneId, voto, commento) =>
+    richiesta("/valutazioni", { metodo: "POST", token, corpo: { prenotazione_id: prenotazioneId, voto, commento } }),
 };

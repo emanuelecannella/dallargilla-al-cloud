@@ -1,4 +1,5 @@
 import { euro } from "../utils/formato.js";
+import AcquistoProdotto from "./AcquistoProdotto.jsx";
 
 export default function SchedaPacchetto({ pacchetto }) {
   return (
@@ -14,6 +15,8 @@ export default function SchedaPacchetto({ pacchetto }) {
         <s>{euro(pacchetto.prezzo_separato_cent)}</s>{" "}
         <span className="risparmio">risparmi {euro(pacchetto.risparmio_cent)}</span>
       </p>
+      <AcquistoProdotto prodotto={{ pacchetto_id: pacchetto.id }} nome={pacchetto.nome} prezzoCent={pacchetto.prezzo_cent} />
+      <p className="nota">Dopo l'acquisto prenoti le due date che preferisci dal calendario di ciascuna esperienza.</p>
     </article>
   );
 }
