@@ -80,3 +80,22 @@ export function inizioConFuso(data, ora) {
   const mm = String(Math.abs(scarto) % 60).padStart(2, "0");
   return `${data}T${ora}:00${segno}${hh}:${mm}`;
 }
+
+/**
+ * Converte un prezzo scritto dalla titolare in centesimi interi, come li salva il database.
+ * Accetta la virgola o il punto: "34" -> 3400, "34,5" -> 3450, "34.50" -> 3450.
+ * Restituisce null se il valore non è un prezzo valido (negativo, con lettere, più di due decimali).
+ */
+export function euroInCentesimi(testo) {
+  const pulito = String(testo).trim().replace("€", "").trim().replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(pulito)) return null;
+  const [interi, decimali = ""] = pulito.split(".");
+  return Number(interi) * 100 + Number(decimali.padEnd(2, "0")); // niente virgola mobile: solo interi
+}
+
+/** "Corso di raku all'aperto" -> "corso-di-raku-all-aperto": l'indirizzo leggibile del servizio */
+export function slugDa(nome) {
+  return nome
+    .normalize("NFD").replace(/[̀-ͯ]/g, "") // toglie gli accenti
+    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}

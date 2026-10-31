@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { durata, euro, formatoServizio, giorno, orario, inizioConFuso, percentuale, postiLiberi, statoPrenotazione } from "./formato.js";
+import { durata, euro, formatoServizio, giorno, orario, euroInCentesimi, inizioConFuso, percentuale, slugDa, postiLiberi, statoPrenotazione } from "./formato.js";
 
 // Lo spazio prima del simbolo dell'euro è uno spazio "non separabile": lo normalizziamo
 const pulito = (testo) => testo.replace(/\s/g, " ");
@@ -67,5 +67,27 @@ describe("pannello della titolare", () => {
   test("l'ora scelta a Palermo diventa ISO con il fuso giusto, anche con l'ora legale", () => {
     expect(inizioConFuso("2026-11-07", "10:00")).toBe("2026-11-07T10:00:00+01:00");
     expect(inizioConFuso("2027-06-12", "18:30")).toBe("2027-06-12T18:30:00+02:00");
+  });
+});
+
+describe("euroInCentesimi", () => {
+  test("accetta virgola, punto e simbolo dell'euro", () => {
+    expect(euroInCentesimi("34")).toBe(3400);
+    expect(euroInCentesimi("34,5")).toBe(3450);
+    expect(euroInCentesimi("34.50")).toBe(3450);
+    expect(euroInCentesimi("0,10 €")).toBe(10); // con i decimali binari 0,10 non sarebbe esatto
+  });
+  test("rifiuta valori che non sono prezzi", () => {
+    expect(euroInCentesimi("-5")).toBeNull();
+    expect(euroInCentesimi("dieci")).toBeNull();
+    expect(euroInCentesimi("3,456")).toBeNull();
+    expect(euroInCentesimi("")).toBeNull();
+  });
+});
+
+describe("slugDa", () => {
+  test("crea un indirizzo leggibile senza accenti né spazi", () => {
+    expect(slugDa("Corso di raku all'aperto")).toBe("corso-di-raku-all-aperto");
+    expect(slugDa("  Notte in bottega – più ceramica! ")).toBe("notte-in-bottega-piu-ceramica");
   });
 });

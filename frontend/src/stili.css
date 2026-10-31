@@ -210,3 +210,10 @@ button.pulsante:disabled { opacity: 0.6; cursor: wait; }
 .tabella th { color: var(--testo-tenue); font-weight: 600; }
 @media (max-width: 640px) { .tabella thead { display: none; } .tabella tr { display: grid; padding: 6px 0; border-bottom: 1px solid var(--sabbia); } .tabella td { border: none; padding: 2px 0; } }
 .modulo--riga .campo input, .modulo--riga .campo select { height: 48px; } /* stessa altezza per tutte le caselle */
+
+/* Gestione dell'offerta */
+.titolo-con-azione { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.scheda-modifica { background: var(--argilla); border-radius: var(--raggio); padding: 16px; width: 100%; }
+.scheda-modifica textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--sabbia); border-radius: 8px; }
+@media (min-width: 640px) { .modulo__riga--quattro { grid-template-columns: repeat(4, 1fr); } }
+code { background: var(--argilla); padding: 1px 6px; border-radius: 4px; }

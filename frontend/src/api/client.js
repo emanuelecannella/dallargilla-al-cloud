@@ -113,3 +113,12 @@ export const amministrazione = {
   annullaSessione: (token, sessioneId) =>
     richiesta(`/admin/sessioni/${sessioneId}`, { metodo: "PATCH", token, corpo: { stato: "annullata" } }),
 };
+
+// Gestione dell'offerta da parte della titolare (RF15, RF18)
+export const offerta = {
+  aggiornaServizio: (token, id, dati) => richiesta(`/admin/servizi/${id}`, { metodo: "PATCH", token, corpo: dati }),
+  creaServizio: (token, dati) => richiesta("/admin/servizi", { metodo: "POST", token, corpo: dati }),
+  promozioni: (token) => richiesta("/admin/promozioni", { token }),
+  creaPromozione: (token, dati) => richiesta("/admin/promozioni", { metodo: "POST", token, corpo: dati }),
+  aggiornaPromozione: (token, id, dati) => richiesta(`/admin/promozioni/${id}`, { metodo: "PATCH", token, corpo: dati }),
+};
