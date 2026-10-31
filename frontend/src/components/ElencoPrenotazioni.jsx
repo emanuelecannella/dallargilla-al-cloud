@@ -22,6 +22,8 @@ export default function ElencoPrenotazioni() {
       setMessaggio({ ok: false, testo: e.message });
     }
     ricarica();
+    // Un annullamento può liberare un'esperienza del pacchetto o restituire un ingresso della membership
+    window.dispatchEvent(new Event("acquisti-cambiati"));
   }
 
   if (inCaricamento) return <p>Caricamento delle prenotazioni…</p>;

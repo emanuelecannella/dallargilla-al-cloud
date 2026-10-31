@@ -93,5 +93,5 @@ docker compose run --rm backend python -m app.seed
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
 - [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
 - [x] Back-end e database: tutte le 30 operazioni della [specifica API](docs/api.md), 71 test automatici
-- [ ] Front-end (in corso): vetrina con catalogo, scheda di ogni servizio con calendario delle date e recensioni, registrazione, accesso, area personale, prenotazione dal calendario con pagamento simulato, annullamento e ricevute, acquisto di pacchetti e membership, recensioni, pannello della titolare con dashboard, calendario, iscritti, gestione di servizi e promozioni
+- [ ] Front-end (in corso, veste grafica verde salvia e argilla): vetrina con catalogo, scheda di ogni servizio con calendario delle date e recensioni, registrazione, accesso, area personale, prenotazione dal calendario con pagamento simulato, annullamento e ricevute, acquisto di pacchetti e membership, recensioni, pannello della titolare con dashboard, calendario, iscritti, gestione di servizi e promozioni
 - [ ] Test funzionali e documentazione

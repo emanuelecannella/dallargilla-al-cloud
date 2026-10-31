@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { acquisti } from "../api/client.js";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
@@ -14,6 +14,12 @@ export default function ElencoAcquisti() {
   const carica = useCallback(() => acquisti.miei(token), [token]);
   const { dati, errore, inCaricamento, ricarica } = useCaricamento(carica);
   const [messaggio, setMessaggio] = useState(null);
+
+  // Si aggiorna quando un'azione sulle prenotazioni cambia pacchetti o ingressi
+  useEffect(() => {
+    window.addEventListener("acquisti-cambiati", ricarica);
+    return () => window.removeEventListener("acquisti-cambiati", ricarica);
+  }, [ricarica]);
 
   async function paga(id) {
     setMessaggio(null);
