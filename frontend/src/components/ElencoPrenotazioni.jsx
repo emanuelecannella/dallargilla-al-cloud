@@ -5,6 +5,7 @@ import { useAutenticazione } from "../contesti/Autenticazione.jsx";
 import { useCaricamento } from "../hooks/useCaricamento.js";
 import ModuloRecensione from "./ModuloRecensione.jsx";
 import { euro, giorno, orario, statoPrenotazione } from "../utils/formato.js";
+import { promemoria } from "../utils/promemoria.js";
 
 // Prenotazioni del cliente (RF11): prossime e passate, con pagamento, annullamento e ricevuta
 export default function ElencoPrenotazioni() {
@@ -52,6 +53,7 @@ export default function ElencoPrenotazioni() {
         </span>
       </div>
       <div className="prenotazione__lato">
+        {p.stato !== "annullata" && <span className="promemoria">{promemoria(p.inizio)}</span>}
         <span className={`stato stato--${p.stato}`}>{statoPrenotazione(p.stato)}</span>
         {p.stato === "in_attesa" && (
           <button className="pulsante pulsante--piccolo"

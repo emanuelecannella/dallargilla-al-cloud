@@ -221,3 +221,4 @@ button.pulsante:disabled { opacity: 0.6; cursor: wait; }
 .scheda-modifica textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--sabbia); border-radius: 8px; }
 @media (min-width: 640px) { .modulo__riga--quattro { grid-template-columns: repeat(4, 1fr); } }
 code { background: var(--argilla); padding: 1px 6px; border-radius: 4px; }
+   .promemoria { font-weight: 700; color: var(--terracotta); }
