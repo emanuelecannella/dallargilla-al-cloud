@@ -2,6 +2,7 @@ import { catalogo } from "../api/client.js";
 import SchedaPacchetto from "../components/SchedaPacchetto.jsx";
 import SchedaServizio from "../components/SchedaServizio.jsx";
 import { benvenuto, chiSiamo, filosofia } from "../contenuti/bottega.js";
+import { fotoBenvenuto, fotoChiSiamo } from "../contenuti/foto.js";
 import { useCaricamento } from "../hooks/useCaricamento.js";
 
 // Una sola richiesta per servizi e pacchetti, eseguite in parallelo
@@ -14,11 +15,14 @@ export default function Home() {
   return (
     <>
       <section className="benvenuto">
-        <div className="contenitore">
-          <p className="benvenuto__sopratitolo">Laboratorio di ceramica · Palermo</p>
-          <h1>{benvenuto.titolo}</h1>
-          <p className="benvenuto__testo">{benvenuto.testo}</p>
-          <a className="pulsante" href="#servizi">Scopri corsi ed esperienze</a>
+        <div className="contenitore benvenuto__griglia">
+          <div>
+            <p className="benvenuto__sopratitolo">Laboratorio di ceramica · Palermo</p>
+            <h1>{benvenuto.titolo}</h1>
+            <p className="benvenuto__testo">{benvenuto.testo}</p>
+            <a className="pulsante" href="#servizi">Scopri corsi ed esperienze</a>
+          </div>
+          <img className="benvenuto__foto" src={fotoBenvenuto.src} alt={fotoBenvenuto.alt} width="1600" height="1067" />
         </div>
       </section>
 
@@ -31,6 +35,10 @@ export default function Home() {
           <h2>La nostra filosofia</h2>
           <p>{filosofia}</p>
         </div>
+        <figure className="foto-larga">
+          <img src={fotoChiSiamo.src} alt={fotoChiSiamo.alt} width="1600" height="800" loading="lazy" />
+          <figcaption>Pezzi tirati al tornio e decorati a mano in laboratorio.</figcaption>
+        </figure>
       </section>
 
       <section id="servizi" className="sezione contenitore">

@@ -1,9 +1,12 @@
+import { fotoDi } from "../contenuti/foto.js";
 import { euro } from "../utils/formato.js";
 import AcquistoProdotto from "./AcquistoProdotto.jsx";
 
 export default function SchedaPacchetto({ pacchetto }) {
+  const foto = fotoDi(pacchetto.slug);
   return (
     <article className="scheda scheda--pacchetto">
+      {foto && <img className="scheda__foto" src={foto.src} alt={foto.alt} width="900" height="675" loading="lazy" />}
       <span className="etichetta etichetta--pacchetto">Pacchetto</span>
       <h3>{pacchetto.nome}</h3>
       <p className="scheda__descrizione">{pacchetto.descrizione}</p>

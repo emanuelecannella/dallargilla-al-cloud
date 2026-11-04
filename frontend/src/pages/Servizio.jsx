@@ -4,6 +4,7 @@ import { acquisti, catalogo, prenotazioni } from "../api/client.js";
 import AcquistoProdotto from "../components/AcquistoProdotto.jsx";
 import PannelloPrenotazione from "../components/PannelloPrenotazione.jsx";
 import { useAutenticazione } from "../contesti/Autenticazione.jsx";
+import { fotoDi } from "../contenuti/foto.js";
 import { useCaricamento } from "../hooks/useCaricamento.js";
 import { euro, formatoServizio, giorno, orario, postiLiberi } from "../utils/formato.js";
 
@@ -46,11 +47,13 @@ export default function Servizio() {
 
   const { servizio, sessioni, valutazioni, piani, giaPrenotate, pacchetti, membership } = dati;
   const coworking = servizio.tipo === "coworking";
+  const foto = fotoDi(servizio.slug);
 
   return (
     <article className="contenitore sezione dettaglio">
       <Link to="/#servizi" className="indietro">← Tutti i corsi e le esperienze</Link>
       <h1>{servizio.nome}</h1>
+      {foto && <img className="dettaglio__foto" src={foto.src} alt={foto.alt} width="900" height="675" />}
       <p className="dettaglio__descrizione">{servizio.descrizione}</p>
 
       <dl className="dettaglio__dati">
