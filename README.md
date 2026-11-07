@@ -68,6 +68,26 @@ Serve soltanto [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 Per provare le API protette: in `/docs` usa `POST /auth/registrazione`, poi `POST /auth/login`, copia l'`access_token` e incollalo nel pulsante **Authorize**.
 
+### Dati dimostrativi (facoltativi)
+
+Per vedere il sito come una bottega già avviata, con clienti, prenotazioni, pagamenti, recensioni e una dashboard con dei numeri, dopo i dati iniziali esegui:
+
+```bash
+docker compose run --rm backend python -m app.demo
+```
+
+Lo script crea cinque clienti di fantasia (password per tutti: `Bottega2026`):
+
+| Cliente | Email | Cosa si vede accedendo |
+| --- | --- | --- |
+| Giulia Rossi (meno di 26 anni) | giulia@demo.terracotta-viva.example | sconto Under 26 applicato da solo, una recensione, un'esperienza in arrivo |
+| Marco Bianchi | marco@demo.terracotta-viva.example | pacchetto "Giornata in bottega" con un'esperienza ancora da prenotare |
+| Sara Esposito | sara@demo.terracotta-viva.example | membership di coworking con gli ingressi rimasti |
+| Luca Ferraro | luca@demo.terracotta-viva.example | pagamento rifiutato: la prenotazione resta in attesa |
+| Anna Greco | anna@demo.terracotta-viva.example | corso di tornio con il codice promozionale `AUTUNNO15` |
+
+Tutti i dati sono inventati, telefoni compresi. Lo script si può rilanciare: se i clienti esistono già non duplica nulla.
+
 Per fermare tutto: `Ctrl+C`, oppure `docker compose down`.
 
 ### Eseguire i test
@@ -85,6 +105,7 @@ Per cancellare tutti i dati e ricaricare quelli iniziali (utile dopo un aggiorna
 docker compose down -v
 docker compose up --build
 docker compose run --rm backend python -m app.seed
+docker compose run --rm backend python -m app.demo   # facoltativo
 ```
 
 ## Stato dei lavori
