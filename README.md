@@ -39,6 +39,7 @@ docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 | --- | --- |
 | [Requisiti](docs/requisiti.md) | Processo attuale della bottega, attori, requisiti e regole di business |
 | [Casi d'uso](docs/diagrammi/casi-d-uso.md) | Diagramma e specifica dei casi d'uso principali |
+| [Stati della prenotazione](docs/diagrammi/stati-prenotazione.md) | Diagramma di macchina a stati: in attesa, confermata, annullata |
 | [Architettura](docs/architettura.md) | Livelli del sistema, flusso di una prenotazione, sicurezza |
 | [Modello dei dati](docs/modello-dati.md) | Diagramma ER, scelte di modellazione, vincoli di integrità |
 | [API](docs/api.md) | Endpoint, convenzioni, codici di risposta ed esempi |

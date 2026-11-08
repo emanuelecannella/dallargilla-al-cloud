@@ -82,6 +82,9 @@ Il blocco della riga (`SELECT ... FOR UPDATE`) serializza le prenotazioni concor
 la seconda richiesta attende che la prima termini e trova il conteggio aggiornato. In questo modo la
 capienza non può mai essere superata (RB01, RNF07).
 
+Dopo la creazione, la prenotazione cambia stato con il pagamento, l'annullamento o la riattivazione:
+il percorso completo è descritto nel [diagramma degli stati della prenotazione](diagrammi/stati-prenotazione.md).
+
 ## Sicurezza
 
 | Aspetto | Soluzione |
