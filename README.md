@@ -43,6 +43,7 @@ docs/       diagrammi UML ed ER, documentazione delle API, screenshot dei test
 | [Architettura](docs/architettura.md) | Livelli del sistema, flusso di una prenotazione, sicurezza |
 | [Modello dei dati](docs/modello-dati.md) | Diagramma ER, scelte di modellazione, vincoli di integrità |
 | [API](docs/api.md) | Endpoint, convenzioni, codici di risposta ed esempi |
+| [Scenari di test](docs/scenari-di-test.md) | Test funzionali dal punto di vista di chi usa il sito, con screenshot |
 
 ## Avvio del progetto
 
