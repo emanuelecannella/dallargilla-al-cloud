@@ -7,13 +7,7 @@ Autore: Emanuele Francesco Cannella. Tema 1, *La digitalizzazione dell'impresa*,
 
 ## Il progetto
 
-*Bottega Terracotta Viva* è un laboratorio di ceramica di fantasia che oggi gestisce corsi, prenotazioni e
-iscritti con strumenti frammentati: agenda cartacea, messaggi e fogli di calcolo. Questa piattaforma ne
-digitalizza i processi principali con l'obiettivo di avvicinare i giovani all'arte ceramica:
-
-- **vetrina pubblica**: storia e filosofia della bottega, catalogo di corsi, esperienze e pacchetti;
-- **area personale del cliente**: registrazione, profilo, prenotazioni, corsi, pagamenti simulati;
-- **pannello di amministrazione**: gestione dell'offerta, del calendario e dashboard con gli indicatori.
+*Bottega Terracotta Viva* è un laboratorio di ceramica di fantasia, nel centro storico di Palermo, che oggi gestisce corsi e prenotazioni con agenda cartacea, messaggi e fogli di calcolo. La mia idea è nata dal bisogno di avvicinare un target giovanile tramite un semplice smartphone, ad una realtà ormai sempre più antica e artigianale, un'arte molto preziosa che potrebbe non solo diventare un ritrovo culturale per i giovani, pieno di crescita e condivisione, ma anche un luogo dove si crea ricchezza patrimoniale per la città. La piattaforma aiuta il cliente ad avvicinarsi a questa realtà con una vetrina pubblica con tutte le informazioni necessarie e la propria area personale, dove può gestire prenotazioni, pagamenti, promemoria e ricevute. Agevola inoltre il lavoro della titolare, rendendo efficiente la creazione e la gestione di corsi ed esperienze, delle prenotazioni e dei posti disponibili, e il controllo dei pagamenti dei clienti, con un quadro chiaro e generale della propria attività.
 
 ## Architettura
 
@@ -114,7 +108,8 @@ docker compose run --rm backend python -m app.demo   # facoltativo
 
 - [x] Struttura del repository
 - [x] Analisi dei requisiti e casi d'uso ([requisiti](docs/requisiti.md), [casi d'uso](docs/diagrammi/casi-d-uso.md))
-- [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md)
+- [x] Progettazione: [architettura](docs/architettura.md), [modello dei dati](docs/modello-dati.md), [API](docs/api.md), [stati della prenotazione](docs/diagrammi/stati-prenotazione.md)
 - [x] Back-end e database: tutte le 30 operazioni della [specifica API](docs/api.md), 71 test automatici
-- [ ] Front-end (in corso, veste grafica verde salvia e argilla): vetrina con catalogo, scheda di ogni servizio con calendario delle date e recensioni, registrazione, accesso, area personale, prenotazione dal calendario con pagamento simulato, annullamento e ricevute, acquisto di pacchetti e membership, recensioni, pannello della titolare con dashboard, calendario, iscritti, gestione di servizi e promozioni
-- [ ] Test funzionali e documentazione
+- [x] Front-end: vetrina con le foto dei pezzi, catalogo e calendario, registrazione, area personale con prenotazioni, pagamenti simulati, ricevute e promemoria, pacchetti e membership, recensioni, pannello della titolare con dashboard, iscritti e gestione dell'offerta; 21 test automatici
+- [x] Dati dimostrativi con clienti di prova
+- [x] [Scenari di test funzionale](docs/scenari-di-test.md) con screenshot, anche da smartphone
