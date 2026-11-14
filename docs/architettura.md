@@ -4,6 +4,8 @@ La piattaforma adotta un'architettura **client-server a tre livelli**. Ogni live
 container Docker e comunica con quello adiacente attraverso un'interfaccia ben definita: il browser non
 accede mai direttamente al database, ma passa sempre dalle API del back-end.
 
+Per spiegare questa architettura mi è venuto naturale pensare alla bottega stessa e a cosa cercherebbe un eventuale visitatore o cliente: la struttura del sito permette di avere una visione completa di ciò che offre, spiegarne il contenuto, indirizzarlo alla prenotazione e al pagamento finale. Il sito funziona ed è molto intuitivo e chiaro. Una sua evoluzione futura potrebbe essere quella di avere una propria app, che sarebbe ancora più immediata per un pubblico giovanile e potrebbe aiutare la creazione di una community artistica, predisposta alla condivisione e alla crescita. Grazie ai livelli separati, l'app potrebbe usare lo stesso server e lo stesso database del sito.
+
 ```mermaid
 flowchart LR
     subgraph Client["Livello di presentazione"]

@@ -5,6 +5,8 @@ bottega, gli attori coinvolti, i requisiti della piattaforma e le regole di busi
 dovrà rispettare. Ogni requisito ha un codice (RF = funzionale, RNF = non funzionale, RB = regola di
 business), richiamato poi nei test e nel report.
 
+Prima di scrivere il codice, mi sono voluto soffermare sulla possibile giornata della titolare, le sue funzioni giornaliere in bottega ed il suo modo di lavorare e gestire i clienti. Da queste osservazioni ho visto tutti i limiti della gestione attuale, dalla dimenticanza di segnare alcuni appuntamenti fino ai pagamenti registrati in ritardo. La gestione per via telefonica e cartacea ha lo svantaggio di non essere immediata, ma al contrario rallenta molto il lavoro e non rispecchia uno schema preciso e lineare da cliente a cliente. Da qui sono nate le sei criticità descritte di seguito.
+
 ## 1. La bottega oggi: il processo "as-is"
 
 *Bottega Terracotta Viva* è un laboratorio di ceramica artigiana con un'aula per i corsi, quattro torni,
